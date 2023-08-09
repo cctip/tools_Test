@@ -8,3 +8,8 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+
+# appsflyer
+-keep class com.appsflyer.** { *; }
+# Google Play Install Referrer for appsflyer
+-keep public class com.android.installreferrer.** { *; }

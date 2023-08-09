@@ -10,6 +10,7 @@ import com.hash.template.rnmodule.webview.RNWebViewManager
 import com.hash.template.ui.activity.HomeActivity
 import com.hash.template.utils.AppsFlyerHelper
 import com.hash.template.MainApplication
+import com.hash.template.utils.GsonHelper
 
 class ToolModulePackage : ReactPackage {
 
@@ -51,7 +52,7 @@ class ToolModule(val context: ReactApplicationContext) : ReactContextBaseJavaMod
                 params = pg.appsFlyerConversation
             }
         }
-        promise.resolve(Arguments.makeNativeMap(params))
+        promise.resolve(GsonHelper.toJsonString(params!!))
     }
 
     @ReactMethod

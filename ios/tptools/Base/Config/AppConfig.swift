@@ -8,7 +8,9 @@
 import Foundation
 import KeychainSwift
 import MJExtension
+import Alamofire
 
+let networkManager = NetworkReachabilityManager(host: "www.apple.com")
 struct AppConfig {
     static let baseURLForAPI = "" // server url
     static let keychainAccess = KeychainSwiftAccessOptions.accessibleAfterFirstUnlockThisDeviceOnly // keychain access

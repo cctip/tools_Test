@@ -12,12 +12,14 @@ import IQKeyboardManagerSwift
 import AppsFlyerLib
 import RxSwift
 import RxRelay
+import Alamofire
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var lView: UIView?
     var appflyerConversionInfo: BehaviorRelay<[AnyHashable : Any]?> = BehaviorRelay(value: nil)
+    var isAppflyerStarted: Bool = false
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // dark mode
@@ -48,7 +50,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loadRN()
             lView?.removeFromSuperview()
         }).disposed(by: rx.disposeBag)
-        AppsFlyerLib.shared().start()
+        
+        // network
+        networkManager?.startListening(onUpdatePerforming: { status in
+            let reachAble: Bool = status == .reachable(.cellular) || status == .reachable(.ethernetOrWiFi)
+            if reachAble && self.isAppflyerStarted == false {
+                AppsFlyerLib.shared().start()
+            } else {
+                DispatchQueue.main.async {
+                    if !reachAble && self.isAppflyerStarted == false {
+                        self.loadOrigin()
+                    }
+                }
+            }
+        })
         return true
     }
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
@@ -91,6 +106,7 @@ extension AppDelegate: AppsFlyerLibDelegate {
         loadOrigin()
     }
     func onConversionDataSuccess(_ conversionInfo: [AnyHashable : Any]) {
+        self.isAppflyerStarted = true
         appflyerConversionInfo.accept(conversionInfo)
         AppInstance.shared.appFlyerConversionInfo = conversionInfo
     }

@@ -1,0 +1,4 @@
+## facebook hash key generate：(replace the alias and keystore_file_path)
+`
+keytool -exportcert -alias $alias -keystore $keystore_file_path | openssl sha1 -binary | openssl base64
+`

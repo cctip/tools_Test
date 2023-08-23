@@ -2,3 +2,8 @@
 `
 keytool -exportcert -alias $alias -keystore $keystore_file_path | openssl sha1 -binary | openssl base64
 `
+
+## show keystore info
+`
+keytool -list -v -keystore $keystore_file_path
+`

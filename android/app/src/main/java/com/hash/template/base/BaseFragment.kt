@@ -2,6 +2,7 @@ package com.hash.template.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -26,7 +28,20 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
-    abstract fun bindView(view: View): VB
+    open fun bindView(view:View): VB? = null
+
+    open fun initViewBindingByReflection(view: View, bindingClassIndex: Int = 0): VB {
+        Log.d("Reflection","initViewBindingByReflection")
+        val genericSuperClass = this::class.java.genericSuperclass
+        if (genericSuperClass is ParameterizedType) {
+            val actualTypeArguments = genericSuperClass.actualTypeArguments
+            val bindingClass = actualTypeArguments[bindingClassIndex] as Class<*>
+            val method = bindingClass.getMethod("bind", View::class.java)
+            return method.invoke(null, view) as VB
+        } else {
+            throw IllegalArgumentException("invalid ViewBindClass")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +81,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(getLayoutRes(), container, false)
-        bindingInner = bindView(view)
+        bindingInner = bindView(view) ?: initViewBindingByReflection(view)
         return view
     }
 

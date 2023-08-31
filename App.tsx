@@ -74,7 +74,7 @@ function App(): JSX.Element {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<HomeScreen url="https://bc.game" />
+			<HomeScreen />
 		</View>
 	);
 }

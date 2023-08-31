@@ -6,10 +6,10 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
+import com.hash.template.MainApplication
 import com.hash.template.rnmodule.webview.RNWebViewManager
 import com.hash.template.ui.activity.HomeActivity
 import com.hash.template.utils.AppsFlyerHelper
-import com.hash.template.MainApplication
 import com.hash.template.utils.GsonHelper
 
 class ToolModulePackage : ReactPackage {
@@ -64,9 +64,17 @@ class ToolModule(val context: ReactApplicationContext) : ReactContextBaseJavaMod
                 promise.reject("missing \"event\" field")
                 return
             }
-            val params = map["params"]
-            val paramMap = if (params is Map<*, *>) params as Map<String, Any> else null
-            AppsFlyerHelper.logEvent(context, eventName, paramMap)
+            val mapParams: Map<String, Any>? = when (val params = map["params"]) {
+                is String -> {
+                    if ("undefined" == params || "null" == params) {
+                        null
+                    } else {
+                        GsonHelper.fromJsonString(params, HashMap::class.java) as Map<String, Any>
+                    }
+                }
+                else -> null
+            }
+            AppsFlyerHelper.logEvent(context, eventName, mapParams)
             promise.resolve(null);
         } catch (e: Exception) {
             e.printStackTrace()

@@ -1,8 +1,6 @@
 package com.hash.template.ui.fragment
 
-import android.util.Log
 import android.view.View
-import com.hash.template.base.BaseFragment
 import com.hash.template.R
 import com.hash.template.base.BaseMVIFragment
 import com.hash.template.base.LoadState
@@ -35,9 +33,8 @@ class TestViewModel : MVIViewModel<UI>(UI()) {
     }
 }
 
-class TestFragment : BaseMVIFragment<UI, TestViewModel, FragmentTestBinding>() {
-
-    override fun getLayoutRes(): Int = R.layout.fragment_test
+class TestFragment :
+    BaseMVIFragment<UI, TestViewModel, FragmentTestBinding>(R.layout.fragment_test) {
 
     override fun initView(view: View) {
         super.initView(view)

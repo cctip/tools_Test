@@ -3,14 +3,15 @@ package com.hash.template.base
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.hash.template.BuildConfig
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseMVIFragment<UIData, VM : MVIViewModel<UIData>, VB : ViewBinding> :
-    BaseFragment<VB>() {
+abstract class BaseMVIFragment<UIData, VM : MVIViewModel<UIData>, VB : ViewBinding>(@LayoutRes layoutRes:Int) :
+    BaseFragment<VB>(layoutRes) {
     protected val viewModel: VM by lazy { initViewModel() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

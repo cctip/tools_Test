@@ -30,7 +30,7 @@ abstract class BaseThemeDialogFragment<VB : ViewBinding> : BaseDialogFragment<VB
         return dialog
     }
 
-    private fun handleEvent(action: (dialog: DialogFragment, stateHandle: SavedStateHandle) -> Unit) {
+    private fun onHandleEvent(action: (dialog: DialogFragment, stateHandle: SavedStateHandle) -> Unit) {
         findNavController().previousBackStackEntry?.savedStateHandle?.run {
             action.invoke(this@BaseThemeDialogFragment, this)
         } ?: kotlin.run {
@@ -39,14 +39,40 @@ abstract class BaseThemeDialogFragment<VB : ViewBinding> : BaseDialogFragment<VB
     }
 
     protected fun onPositiveClick() {
-        handleEvent { _, stateHandle ->
+        onHandleEvent { _, stateHandle ->
             stateHandle[KEY] = RESULT_POSITIVE
             dismiss()
         }
     }
 
+    /**
+     * custom your event here,add your own back entry listener
+     * usage:
+     *  in fragment1:
+     *  ```
+     *      open dialog somewhere
+     *      observeLiveDataByKey<T>(key){t:T->
+     *          //code here
+     *      }
+     *  ```
+     *
+     *  in dialog,when positive button clicked:
+     *  ```
+     *      handleEvent{dialog,stateHandle->
+     *          stateHandle[key] = value
+     *          dialog.dismiss()
+     *      }
+     *  ```
+     *
+     */
+    protected fun handleEvent(action: ((DialogFragment, SavedStateHandle) -> Unit)? = null) {
+        onHandleEvent { dialog, stateHandle ->
+            action?.invoke(dialog, stateHandle)
+        }
+    }
+
     protected fun onNegativeClick() {
-        handleEvent { _, stateHandle ->
+        onHandleEvent { _, stateHandle ->
             stateHandle[KEY] = RESULT_NEGATIVE
             dismiss()
         }

@@ -9,6 +9,8 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textViewStyle">@style/AppTextView</item>
+        <item name="buttonStyle">@style/AppButton</item>
     </style>
 
     <style name="ActionBarNavigationStyle" parent="Widget.AppCompat.ImageButton">

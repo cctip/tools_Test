@@ -2,7 +2,6 @@ package com.hash.template.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
@@ -28,10 +28,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
-    open fun bindView(view:View): VB? = null
+    open fun bindView(view: View): VB? = null
 
     open fun initViewBindingByReflection(view: View, bindingClassIndex: Int = 0): VB {
-        Log.d("Reflection","initViewBindingByReflection")
         val genericSuperClass = this::class.java.genericSuperclass
         if (genericSuperClass is ParameterizedType) {
             val actualTypeArguments = genericSuperClass.actualTypeArguments
@@ -111,5 +110,14 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     open fun onFirstResume() {
 
+    }
+
+    /**
+     * @param action set snack action here
+     */
+    open fun showSnack(msg: CharSequence, action: (Snackbar.() -> Unit)? = null) {
+        val snack = Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT)
+        action?.also { it.invoke(snack) }
+        snack.show()
     }
 }

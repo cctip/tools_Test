@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.hash.template.R
+import com.hash.template.ui.NavigationScheme
 
 val navOptions = NavOptions.Builder()
     .setEnterAnim(R.anim.slide_in_right)
@@ -14,12 +15,8 @@ val navOptions = NavOptions.Builder()
     .setPopExitAnim(R.anim.slide_right_out)
     .build()
 
-sealed class NavigationScheme(val uri: String) {
-
-}
-
 inline fun Fragment.navigationTo(scheme: NavigationScheme) {
-    findNavController().navigate(Uri.parse(scheme.uri), navOptions)
+    findNavController().navigate(scheme.uri, navOptions)
 }
 
 inline fun Fragment.navigationTo(uri: String) {
@@ -34,6 +31,9 @@ fun <T> Fragment.getLiveDataInCurrentBackStack(key: String): LiveData<T>? {
     return findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData(key)
 }
 
+/**
+ * observe a value from back stack
+ */
 fun <T> Fragment.observeLiveDataByKey(key: String, action: (T) -> Unit) {
     getLiveDataInCurrentBackStack<T>(key)?.observe(this) {
         action.invoke(it)

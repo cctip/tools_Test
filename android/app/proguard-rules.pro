@@ -9,6 +9,50 @@
 
 # Add any project specific keep options here:
 
+# 如果项目中使用到注解，需要保留注解属性
+-keepattributes *Annotation*
+
+# 屏蔽警告
+-ignorewarnings
+
+# 抛出异常时保留代码行号
+-keepattributes SourceFile,LineNumberTable
+#表示不混淆枚举中的values()和valueOf()方法
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+#Gson混淆配置
+ #避免混淆泛型, 这在JSON实体映射时非常重要
+ -dontwarn com.google.gson.**
+ -keepattributes Signature
+# Gson specific classes
+-keep class sun.misc.Unsafe { *;}
+# Application classes that will beserialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *;}
+-keep class com.google.gson.** {*;}
+-keep class com.google.**{*;}
+-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep interface com.google.gson.**{*;}
+
+ #当前项目下的资源配置
+ -keep class com.lucky.views.db.** {*;}
+ -keep class com.lucky.views.rnmodule.** {*;}
+ -keep class com.lucky.views.viewmodel.** {*;}
+ -keep class com.lucky.views.widgets.** {*;}
+ -keep class com.lucky.views.ui.** {*;}
+
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Fragment
+-keep public class * extends android.app.Fragment
+-keep public class * extends android.app.Service
+
 # appsflyer
 -keep class com.appsflyer.** { *; }
 # Google Play Install Referrer for appsflyer

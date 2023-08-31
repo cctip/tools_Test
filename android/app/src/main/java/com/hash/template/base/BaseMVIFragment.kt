@@ -2,8 +2,10 @@ package com.hash.template.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
+import com.hash.template.BuildConfig
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
@@ -13,10 +15,46 @@ abstract class BaseMVIFragment<UIData, VM : MVIViewModel<UIData>, VB : ViewBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObserver();
+        initObserver()
     }
 
+    @CallSuper
     open fun initObserver() {
+        listen {
+            viewModel.errorState.collect {
+                it?.run {
+                    onError(this)
+                    viewModel.clearError()
+                }
+            }
+        }
+        listen {
+            viewModel.loadingState.collect {
+                onLoadingState(it)
+            }
+        }
+    }
+
+    /**
+     * called when loading state changed
+     */
+    protected open fun onLoadingState(loadState: LoadState?) {
+
+    }
+
+    /**
+     * called when error occurs
+     */
+    protected open fun onError(throwable: Throwable) {
+        if (BuildConfig.DEBUG) {
+            throwable.message?.also {
+                showSnack(it) {
+                    setAction("dismiss") {
+                        this.dismiss()
+                    }
+                }
+            }
+        }
     }
 
     protected fun listen(block: suspend () -> Unit) {

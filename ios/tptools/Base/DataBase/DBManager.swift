@@ -12,16 +12,13 @@ struct DataBaseName {
 }
 
 struct TableName {
-    static let TBQuestion = "TBQuestion"
-    static let TBSurvey = "TBSurvey"
     static let TBAddress = "TBAddress"
-    static let TBCredits = "TBCredits"
 }
 
 public class DBManager: NSObject {
     private static var dbPath: String = {
-        //let filePath: String = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!.appending("/\(DataBaseName.walletDB)")
-        return Bundle.main.path(forResource: "loc", ofType: "db")! // bundle
+        let filePath: String = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!.appending("/\(DataBaseName.walletDB)")
+        return filePath
     }()
     
     private static var configuaration: Configuration = {

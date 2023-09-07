@@ -81,25 +81,25 @@ class YNavigationView: UIView {
 
     override func updateConstraints() {
         super.updateConstraints()
-        backButton.snp.makeConstraints { make in
+        backButton.snp.remakeConstraints { make in
             make.size.equalTo(24)
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
         }
         if titleMode == .left {
-            titleLabel.snp.makeConstraints { make in
+            titleLabel.snp.remakeConstraints { make in
                 make.top.bottom.equalToSuperview()
                 make.left.equalTo(backButton.snp.right).offset(16)
                 make.width.greaterThanOrEqualTo(40)
             }
         } else {
-            titleLabel.snp.makeConstraints { make in
+            titleLabel.snp.remakeConstraints { make in
                 make.width.greaterThanOrEqualTo(100)
                 make.centerX.equalToSuperview()
                 make.top.bottom.equalToSuperview()
             }
         }
-        rightButton.snp.makeConstraints { make in
+        rightButton.snp.remakeConstraints { make in
             make.size.equalTo(24)
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().offset(-20)

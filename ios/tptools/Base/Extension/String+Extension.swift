@@ -23,91 +23,74 @@ extension String {
         }
         return self
     }
-    
-    func joinTimeToInterval() -> TimeInterval {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        if let date = dateFormatter.date(from: self) {
-            return date.timeIntervalSince1970
-        }
-        return 0
-    }
-    func joinTimeToEnglishName() -> String {
-        var day: String = ""
-        var month: String = ""
-        let arr = self.components(separatedBy: "/")
-        guard arr.count == 3 else { return "" }
-        day = arr[2]
-        let montyInt = Int(arr[1]) ?? 1
-        if montyInt == 1 {
-            month = "Jan"
-        } else if montyInt == 2 {
-            month = "Feb"
-        } else if montyInt == 3 {
-            month = "Mar"
-        } else if montyInt == 4 {
-            month = "Apr"
-        } else if montyInt == 5 {
-            month = "May"
-        } else if montyInt == 6 {
-            month = "Jun"
-        } else if montyInt == 7 {
-            month = "Jul"
-        } else if montyInt == 8 {
-            month = "Aug"
-        } else if montyInt == 9 {
-            month = "Sept"
-        } else if montyInt == 10 {
-            month = "Oct"
-        } else if montyInt == 11 {
-            month = "Nov"
-        } else if montyInt == 12 {
-            month = "Dec"
-        }
-        return day + "." + month
-    }
 }
 
 extension TimeInterval {
-    func customGetHour() -> Int {
+    func getYear() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        let date = Date(timeIntervalSince1970: self)
-        let strVal = dateFormatter.string(from: date)
-        return Int(strVal) ?? 0
-    }
-    
-    func customPointDetailTime() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy"
         let date = Date(timeIntervalSince1970: self)
         return dateFormatter.string(from: date)
     }
-    
-    func customRedeemHistoryTime() -> String {
-        return self.customPointDetailTime()
-    }
-    
-    func customJoinTime() -> String {
+    func getMonth() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.dateFormat = "MM"
         let date = Date(timeIntervalSince1970: self)
-        let formattedString = dateFormatter.string(from: date)
-        return formattedString
+        return dateFormatter.string(from: date)
     }
-    
-    func customTaskLeftTime() -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .positional
-        formatter.zeroFormattingBehavior = .pad
-        if let resString = formatter.string(from: self) {
-            let resArray = resString.components(separatedBy: ":")
-            if resArray.count == 3 {
-                return resArray[0] + "h:" + resArray[1] + "m:" + resArray[2] + "s"
-            }
+    func getMonthEng() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM"
+        let date = Date(timeIntervalSince1970: self)
+        let montyInt = Int(dateFormatter.string(from: date))
+        var result = ""
+        if montyInt == 1 {
+            result = "Jan"
+        } else if montyInt == 2 {
+            result = "Feb"
+        } else if montyInt == 3 {
+            result = "Mar"
+        } else if montyInt == 4 {
+            result = "Apr"
+        } else if montyInt == 5 {
+            result = "May"
+        } else if montyInt == 6 {
+            result = "Jun"
+        } else if montyInt == 7 {
+            result = "Jul"
+        } else if montyInt == 8 {
+            result = "Aug"
+        } else if montyInt == 9 {
+            result = "Sept"
+        } else if montyInt == 10 {
+            result = "Oct"
+        } else if montyInt == 11 {
+            result = "Nov"
+        } else if montyInt == 12 {
+            result = "Dec"
         }
-        return "\(self)" + "s"
+        return result
+    }
+    func getDay() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
+        let date = Date(timeIntervalSince1970: self)
+        return dateFormatter.string(from: date)
+    }
+    func getHour() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let date = Date(timeIntervalSince1970: self)
+        return dateFormatter.string(from: date)
+    }
+    func getTime() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        let date = Date(timeIntervalSince1970: self)
+        return dateFormatter.string(from: date)
+    }
+    func customConclusionDate() -> String {
+        return "\(self.getDay()), \(self.getMonthEng()), \(self.getYear()) \(self.getTime())"
     }
 }
 

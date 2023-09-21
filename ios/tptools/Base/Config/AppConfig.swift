@@ -14,6 +14,7 @@ let networkManager = NetworkReachabilityManager(host: "www.apple.com")
 struct AppConfig {
     static let baseURLForAPI = "" // server url
     static let keychainAccess = KeychainSwiftAccessOptions.accessibleAfterFirstUnlockThisDeviceOnly // keychain access
+    static let kDBPassword = "Y*87*^**(dDHh!@kH123"
     
     // keychain
     static let kUserIdKeychain = "kUserIdKeychain"

@@ -55,7 +55,7 @@ class YNavigationView: UIView {
     init() {
         super.init(frame: .zero)
         addSubviews([backButton, titleLabel, rightButton])
-        backgroundColor = .baseWhite
+        backgroundColor = .clear
         updateConstraints()
     }
 

@@ -9,14 +9,12 @@ import Foundation
 import UIKit
 
 public class GradientView: UIView {
-    public var startColor: UIColor = .black { didSet { updateColors() }}
-    public var endColor: UIColor = .white { didSet { updateColors() }}
+    public var colors: [UIColor] = [UIColor]() { didSet { updateColors() }}
+    public var locations: [Double] = [Double]() { didSet { updateLocations() }}
     
     public var startPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updatePoints() }}
     public var endPoint: CGPoint = CGPoint(x: 0.5, y: -2.59) { didSet { updatePoints() }}
 
-    public var startLocation: Double = 0 { didSet { updateLocations() }}
-    public var endLocation: Double = 1 { didSet { updateLocations() }}
     public var radiusMultiple: CGFloat = 0 { didSet { updateCornerRadius() } }
     
     override public class var layerClass: AnyClass { return CAGradientLayer.self }
@@ -34,12 +32,12 @@ public class GradientView: UIView {
     }
     
     private func updateLocations() {
-        gradientLayer.locations = [startLocation as NSNumber, endLocation as NSNumber]
+        gradientLayer.locations = locations.map({ $0 as NSNumber })
         setNeedsDisplay()
     }
 
     private func updateColors() {
-        gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
+        gradientLayer.colors = colors.map({ $0.cgColor })
         setNeedsDisplay()
     }
 

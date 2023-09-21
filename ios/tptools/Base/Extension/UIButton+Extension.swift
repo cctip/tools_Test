@@ -16,7 +16,6 @@ extension UIButton {
         get {
             return objc_getAssociatedObject(self, &key)
         }
-        
         set {
             objc_setAssociatedObject(self, &key, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }

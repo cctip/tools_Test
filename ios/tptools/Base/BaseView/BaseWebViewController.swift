@@ -73,7 +73,6 @@ class BaseWebViewController: YBaseViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.progressView.isHidden = true
-        // 移除Messagehandler
         jsToNativeMethods.keys.forEach { (methodName) in
             self.webView.configuration.userContentController.removeScriptMessageHandler(forName: methodName)
         }
@@ -121,7 +120,6 @@ class BaseWebViewController: YBaseViewController {
         webView = WKWebView.init(frame: .zero, configuration: config)
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        // 加载
         if p_isLocalFile() {
             webView.loadFileURL(webUrl, allowingReadAccessTo: webUrl)
         } else {
@@ -173,7 +171,7 @@ extension BaseWebViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigat
             headerValue = oauthInfo.accessToken
         }
 
-        // 创建一个HTTPCookie对象
+        // Create a HTTPCookie Object
         var props = Dictionary<HTTPCookiePropertyKey, Any>()
         props[HTTPCookiePropertyKey.name] = headerField
         props[HTTPCookiePropertyKey.value] = headerValue
@@ -181,7 +179,7 @@ extension BaseWebViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigat
         props[HTTPCookiePropertyKey.domain] = AppConfig.kH5Host
         let cookie = HTTPCookie(properties: props)
 
-        // 通过setCookie方法把Cookie保存起来
+        // use func setCookie to save a Cookie
         cookieStorage.setCookie(cookie!)
         for cookie in (cookieStorage.cookies ?? nil)!{
             let nameStr = "\"document.cookie=\(cookie.name)=\(cookie.value)"
@@ -216,7 +214,7 @@ extension BaseWebViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigat
     // MARK: WKUIDelegate
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
         let alertVC = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "确定", style: .default, handler: { (action) in
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alertVC.dismiss(animated: true, completion: nil)
         }))
         self.present(alertVC, animated: true)
@@ -229,7 +227,6 @@ extension BaseWebViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigat
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let _ = navigationAction.request.url {
-                // 创建一个新的WKWebView来打开弹出窗口
              newWebView = WKWebView(frame: CGRect(x: 0, y: 100, width: self.view.bounds.width, height: self.view.bounds.height), configuration: configuration)
                 newWebView?.uiDelegate = self
                 self.view.addSubview(newWebView!)
@@ -240,12 +237,12 @@ extension BaseWebViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigat
     
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
         let alertVC = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "确定", style: .default, handler: { (action) in
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alertVC.dismiss(animated: true, completion: {
                 completionHandler(true)
             })
         }))
-        alertVC.addAction(UIAlertAction(title: "取消", style: .default, handler: { (action) in
+        alertVC.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             alertVC.dismiss(animated: true, completion: {
                 completionHandler(false)
             })

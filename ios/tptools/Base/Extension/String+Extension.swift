@@ -99,7 +99,6 @@ extension Optional<Bool> {
         guard let rhs else {
             return false
         }
-
         return lhs == rhs
     }
 }

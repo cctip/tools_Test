@@ -23,9 +23,11 @@ public class DBManager: NSObject {
     
     private static var configuaration: Configuration = {
         var configuration = Configuration()
+        #if SQLITE_HAS_CODEC
         configuration.prepareDatabase { db in
-            // try db.usePassphrase(AppConfig.kDBPassword) // Set password
+            try db.usePassphrase(AppConfig.kDBPassword) // Set password
         }
+        #endif
         configuration.busyMode = Database.BusyMode.timeout(5.0)
         return configuration
     }()

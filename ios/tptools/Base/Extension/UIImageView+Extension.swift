@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import Kingfisher
 
 extension UIImageView {
@@ -14,12 +13,18 @@ extension UIImageView {
         if url.isEmpty {
             return
         }
-
         if url.hasPrefix("http") {
-            self.kf.setImage(with: URL(string: url),
-                             options: [.loadDiskFileSynchronously,.cacheOriginalImage])
+            self.kf.setImage(with: URL(string: url), options: [.loadDiskFileSynchronously,.cacheOriginalImage])
         } else {
             image = UIImage(named: url)
         }
+    }
+}
+
+extension UIImage {
+    func setAlpha(_ alpha: CGFloat) -> UIImage {
+        let imgView = UIImageView(image: self)
+        imgView.alpha = alpha
+        return imgView.getImage() ?? UIImage()
     }
 }

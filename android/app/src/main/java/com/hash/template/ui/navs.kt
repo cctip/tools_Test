@@ -15,4 +15,6 @@ sealed class NavigationScheme(private val hostAndPath: String) {
      * the result uri is app://test
      */
     object Test : NavigationScheme("test")
+
+    object TestDialog:NavigationScheme("test_dialog")
 }

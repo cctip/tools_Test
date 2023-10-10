@@ -28,4 +28,20 @@ object SPUtil {
     fun getLong(key: String, defValue: Long = 0L): Long {
         return sp.getLong(key, defValue)
     }
+
+    fun put(key: String, value: Boolean) {
+        sp.edit().putBoolean(key, value).apply()
+    }
+
+    fun getBoolean(key: String, defValue: Boolean = false): Boolean {
+        return sp.getBoolean(key, defValue)
+    }
+
+    fun put(key: String, value: Int) {
+        sp.edit().putInt(key, value).apply()
+    }
+
+    fun getInt(key: String, defValue: Int): Int {
+        return sp.getInt(key, defValue)
+    }
 }

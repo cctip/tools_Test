@@ -8,7 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.hash.template.R
 
-abstract class BaseThemeDialogFragment<VB : ViewBinding> : BaseDialogFragment<VB>() {
+abstract class BaseThemeDialogFragment<VB : ViewBinding>(layoutRes: Int) :
+    BaseDialogFragment<VB>(layoutRes) {
 
     companion object {
         const val KEY = "dia_close"

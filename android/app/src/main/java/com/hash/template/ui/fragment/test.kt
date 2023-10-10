@@ -5,7 +5,10 @@ import com.hash.template.R
 import com.hash.template.base.BaseMVIFragment
 import com.hash.template.base.LoadState
 import com.hash.template.base.MVIViewModel
+import com.hash.template.base.navigateBackTo
+import com.hash.template.base.navigationTo
 import com.hash.template.databinding.FragmentTestBinding
+import com.hash.template.ui.NavigationScheme
 import kotlinx.coroutines.delay
 
 
@@ -43,6 +46,9 @@ class TestFragment :
         }
         binding.btnLoadError.setOnClickListener {
             viewModel.fetchError()
+        }
+        binding.btnDialog.setOnClickListener {
+            navigationTo(NavigationScheme.TestDialog)
         }
     }
 

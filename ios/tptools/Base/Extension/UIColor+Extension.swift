@@ -17,23 +17,16 @@ extension UIColor {
         let darkColor = UIColor(hexString: darkHexString, transparency: darkAlpha)
         return UIColor(.dm, light: lightColor!, dark: darkColor!)
     }
-
     func alpha(_ alpha: CGFloat) -> UIColor {
         return withAlphaComponent(alpha)
     }
-    
-    static var toolViewBGColor: UIColor {
+    static var bgColor: UIColor {
         return .color(with: "#24262B", darkHexString: "#24262B")
     }
-    
     static var baseBlack: UIColor {
         return UIColor.color(with: "#000000", darkHexString: "#000000")
     }
-
     static var baseWhite: UIColor {
         return UIColor.color(with: "#FFFFFF", darkHexString: "#FFFFFF")
     }
-    
-    
-    
 }

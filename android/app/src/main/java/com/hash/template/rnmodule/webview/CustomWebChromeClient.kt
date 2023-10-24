@@ -39,7 +39,7 @@ class CustomWebChromeClient(val proxy: ClientProxy?) : WebChromeClient() {
                     dialog.dismiss()
                 }
             }
-            webView.webViewClient = WebViewClient()
+            webView.webViewClient = CustomWebViewClient(null)
             if (resultMsg?.obj is WebView.WebViewTransport) {
                 (resultMsg.obj as WebView.WebViewTransport).webView = webView
             }

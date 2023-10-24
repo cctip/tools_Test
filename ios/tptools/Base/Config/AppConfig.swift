@@ -18,7 +18,8 @@ struct AppConfig {
     
     // keychain
     static let kUserIdKeychain = "kUserIdKeychain"
-
+    static let kASARequestDataKey = "kASARequestDataKey"
+    
     // UserDefault
     static let kUserDefaultUserInfoKey = "kUserDefaultUserInfoKey"
     
@@ -35,10 +36,34 @@ class AppInstance: NSObject {
     private override init() {
         super.init()
     }
+    
+    func getASA() -> ASALocalModel {
+        guard let asaData: String = KeychainSwift().get(AppConfig.kASARequestDataKey) else {
+            return ASALocalModel()
+        }
+        let model = ASALocalModel.mj_object(withKeyValues: asaData) ?? ASALocalModel()
+        return model
+    }
+    func setASA(_ model: ASALocalModel) {
+        let jsonStr = model.mj_JSONString() ?? ""
+        KeychainSwift().set(jsonStr, forKey: AppConfig.kASARequestDataKey, withAccess: AppConfig.keychainAccess)
+    }
 }
 
 @objcMembers
 class AppsFlyerEventModel: NSObject {
     var event: String = ""
     var params: [String: Any]?
+}
+
+@objcMembers
+class ASALocalModel: NSObject {
+    var isLoaded: Bool = false
+    var isATT: Bool = false
+    
+    convenience init(isLoaded: Bool = false, isATT: Bool = false) {
+        self.init()
+        self.isLoaded = isLoaded
+        self.isATT = isATT
+    }
 }

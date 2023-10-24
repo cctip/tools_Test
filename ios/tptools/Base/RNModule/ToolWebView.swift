@@ -77,7 +77,7 @@ class ToolWebView: UIView {
     }
     private func p_setupProgressView() {
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.trackTintColor = UIColor.toolViewBGColor
+        progressView.trackTintColor = UIColor.bgColor
         progressView.progressTintColor = UIColor(red: 62.0 / 255.0, green: 161.0 / 255.0, blue: 39.0 / 255.0, alpha: 1)
         progressView.isHidden = true
         self.addSubview(progressView)
@@ -89,7 +89,7 @@ class ToolWebView: UIView {
             ])
     }
     private func p_setElements() {
-        self.backgroundColor = UIColor.toolViewBGColor
+        self.backgroundColor = UIColor.bgColor
         let config = WKWebViewConfiguration()
         
         // window.jsBridge.postMessage(key, params)
@@ -131,7 +131,7 @@ class ToolWebView: UIView {
         webView.uiDelegate = self
         webView.navigationDelegate = self
         webView.scrollView.contentInsetAdjustmentBehavior = .never
-        webView.backgroundColor = UIColor.toolViewBGColor
+        webView.backgroundColor = UIColor.bgColor
         webView.isOpaque = false
         
         // set bgView
@@ -142,7 +142,7 @@ class ToolWebView: UIView {
         }
         webView.sendSubviewToBack(bgView)
         
-        webView.scrollView.backgroundColor = UIColor.toolViewBGColor
+        webView.scrollView.backgroundColor = UIColor.bgColor
         self.addSubview(webView)
     }
 }
@@ -198,7 +198,7 @@ extension ToolWebView: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegat
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let _ = navigationAction.request.url {
             configuration.applicationNameForUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15"
-            modelWebView = WKWebView(frame: CGRect(x: 0, y: 40, width: UIDevice.kScreenWidth(), height: UIDevice.kScreenHeight()), configuration: configuration)
+            modelWebView = WKWebView(frame: CGRect(x: 0, y: 40, width: UIDevice.kScreenW(), height: UIDevice.kScreenH()), configuration: configuration)
             modelWebView?.uiDelegate = self
             let vc = UIViewController()
             vc.view = modelWebView

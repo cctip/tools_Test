@@ -22,7 +22,7 @@ extension UIImageView {
 }
 
 extension UIImage {
-    func setAlpha(_ alpha: CGFloat) -> UIImage {
+    func setAlpha(_ alpha: CGFloat = 0.7) -> UIImage {
         let imgView = UIImageView(image: self)
         imgView.alpha = alpha
         return imgView.getImage() ?? UIImage()

@@ -25,6 +25,7 @@ import {
 	useColorScheme,
 	View,
 	NativeModules,
+	Platform,
 } from 'react-native';
 
 import {
@@ -34,6 +35,7 @@ import {
 	LearnMoreLinks,
 	ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import AndroidPage from './AndroidSplash';
 
 type SectionProps = PropsWithChildren<{
 	title: string;
@@ -72,10 +74,18 @@ function App(): JSX.Element {
 		backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
 	};
 
+	const Panel = ()=>{
+		if(Platform.OS == 'android'){
+			return <AndroidPage/>
+		}else{
+			return <HomeScreen/>
+		}
+	}
+
 	return (
 		<View style={{ flex: 1 }}>
 			<SafeAreaView style={{ flex: 1 }}>
-				<HomeScreen />
+				<Panel />
 			</SafeAreaView>
 		</View>
 	);

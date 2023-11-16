@@ -1,6 +1,5 @@
 package com.hash.template
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.facebook.react.ReactActivity
@@ -9,13 +8,8 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.hash.template.base.BaseActivity
 import com.hash.template.rnmodule.webview.RNWebView
-import com.hash.template.ui.activity.HomeActivity
 
-class MainActivity : ReactActivity() {
-
-    companion object {
-        const val KEY_LEGAL = "abc_g"
-    }
+class SplashActivity : ReactActivity() {
 
     /**
      * Returns the name of the main component registered from JavaScript. This is used to schedule
@@ -39,10 +33,6 @@ class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BaseActivity.immersive(window)
-        //if open MainActivity illegally, go to HomeActivity
-        if (!intent.getBooleanExtra(KEY_LEGAL, false)) {
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
     }
 
     override fun onBackPressed() {

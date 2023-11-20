@@ -38,6 +38,12 @@ object AppsFlyerHelper {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
 
     fun initAF(application: Application) {
+        if (!NetworkHelper.isAvailable(application)) {
+            scope.launch {
+                conversionStateFlow.emit(AppsFlyerConversionEvent.Error("Network not available"))
+            }
+            return
+        }
         AppsFlyerLib.getInstance().setDebugLog(true)
         AppsFlyerLib.getInstance().init(AF_DEV_KEY, object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(map: MutableMap<String, Any?>?) {

@@ -2,6 +2,7 @@ package com.hash.template.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 
 object SPUtil {
     private const val SP_NAME = "config"
@@ -43,5 +44,13 @@ object SPUtil {
 
     fun getInt(key: String, defValue: Int): Int {
         return sp.getInt(key, defValue)
+    }
+
+    /**
+     * 方便链式调用
+     * remember to apply or commit
+     */
+    fun getEditor(): Editor {
+        return sp.edit()
     }
 }

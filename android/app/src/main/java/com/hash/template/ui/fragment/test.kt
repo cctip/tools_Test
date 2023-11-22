@@ -2,11 +2,12 @@ package com.hash.template.ui.fragment
 
 import android.view.View
 import com.hash.template.R
+import com.hash.template.ui.dialog.CustomDialog
 import com.hash.template.base.BaseMVIFragment
 import com.hash.template.base.LoadState
 import com.hash.template.base.MVIViewModel
-import com.hash.template.base.navigateBackTo
 import com.hash.template.base.navigationTo
+import com.hash.template.databinding.DialogTestBinding
 import com.hash.template.databinding.FragmentTestBinding
 import com.hash.template.ui.NavigationScheme
 import kotlinx.coroutines.delay
@@ -49,6 +50,12 @@ class TestFragment :
         }
         binding.btnDialog.setOnClickListener {
             navigationTo(NavigationScheme.TestDialog)
+        }
+        binding.btnDialogCustom.setOnClickListener {
+            CustomDialog<DialogTestBinding> { inflater, container ->
+                val binding = DialogTestBinding.inflate(inflater, container, false)
+                binding
+            }.show(childFragmentManager, "asdf")
         }
     }
 

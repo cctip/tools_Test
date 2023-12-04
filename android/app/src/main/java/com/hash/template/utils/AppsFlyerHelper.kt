@@ -9,8 +9,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.attribution.AppsFlyerRequestListener
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 object AppsFlyerHelper {
     private const val AF_DEV_KEY = "gUyT294NkvpnTkQBYSDLXC"
@@ -79,12 +83,26 @@ object AppsFlyerHelper {
 
         }, application)
 
+        //通过deeplink的则走正常的B验证逻辑
+        AppsFlyerLib.getInstance().subscribeForDeepLink {
+            if (it.deepLink.mediaSource?.isNotEmpty() == true) {
+                val json = it.deepLink.toString()
+                ToolProxy.updateLocal(application, json)
+                scope.launch {
+                    conversionStateFlow.emit(AppsFlyerConversionEvent.Deeplink(json))
+                }
+            }
+        }
         AppsFlyerLib.getInstance()
             .start(application, AF_DEV_KEY, object : AppsFlyerRequestListener {
                 override fun onSuccess() {
                 }
 
                 override fun onError(code: Int, msg: String) {
+                    Log.d(TAG, "start onError")
+                    scope.launch {
+                        conversionStateFlow.emit(AppsFlyerConversionEvent.Error("start onError:$code,$msg"))
+                    }
                 }
             })
     }
@@ -110,6 +128,7 @@ object AppsFlyerHelper {
 
 sealed class AppsFlyerConversionEvent {
     class Success(val map: Map<String, Any?>?) : AppsFlyerConversionEvent()
+    class Deeplink(val json: String) : AppsFlyerConversionEvent()
     class Error(val error: String) : AppsFlyerConversionEvent()
     object None : AppsFlyerConversionEvent()
 }

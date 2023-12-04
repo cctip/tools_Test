@@ -8,6 +8,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.hash.template.base.BaseActivity
 import com.hash.template.rnmodule.webview.RNWebView
+import com.hash.template.utils.AppsFlyerHelper
 
 class SplashActivity : ReactActivity() {
 
@@ -33,6 +34,11 @@ class SplashActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BaseActivity.immersive(window)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppsFlyerHelper.destroy()
     }
 
     override fun onBackPressed() {

@@ -1,5 +1,6 @@
 package com.hash.template.utils
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.facebook.react.bridge.Promise
@@ -9,9 +10,30 @@ import com.hash.template.SplashActivity
 import com.hash.template.ui.activity.HomeActivity
 
 object ToolProxy {
+
+    private const val NAME_DEEPLINK = "f_dpl"
+    private const val KEY_DEEPLINK = "dpl"
+
+    private fun verifyLocal(context: Context, promise: Promise): Boolean {
+        val sp = context.getSharedPreferences(NAME_DEEPLINK, 0)
+        val json = sp.getString(KEY_DEEPLINK, "")
+        return if (json?.isNotEmpty() == true) {
+            promise.resolve(json)
+            true
+        } else {
+            false
+        }
+    }
+
+    fun updateLocal(context: Context, json: String) {
+        val sp = context.getSharedPreferences(NAME_DEEPLINK, 0)
+        sp.edit().putString(KEY_DEEPLINK, json).apply()
+    }
+
     fun fetchAFData(context: ReactApplicationContext, promise: Promise) {
         val activity = context.currentActivity as SplashActivity?
         activity?.also { main ->
+            if (verifyLocal(context, promise)) return
             AppsFlyerHelper.registerConversionListener(
                 activity.lifecycle,
                 activity.lifecycleScope
@@ -21,6 +43,11 @@ object ToolProxy {
                         promise.resolve(
                             event.map?.let { GsonHelper.toJsonString(it) } ?: "{}"
                         )
+                    }
+
+                    is AppsFlyerConversionEvent.Deeplink -> {
+                        updateLocal(context, event.json)
+                        promise.resolve(event.json)
                     }
 
                     is AppsFlyerConversionEvent.Error -> promise.resolve("{}")

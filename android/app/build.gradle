@@ -139,11 +139,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.ext.navVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navVersion}"
     //appsflyer
-    implementation 'com.appsflyer:af-android-sdk:6.9.0'
+    implementation 'com.appsflyer:af-android-sdk:6.12.1'
     //Google Play Install Referrer for appsflyer
     implementation "com.android.installreferrer:installreferrer:2.2"
 
-    implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.github.duxl:FlycoRoundView:v2.1.1'
     implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14"
     implementation "com.airbnb.android:lottie:6.1.0"

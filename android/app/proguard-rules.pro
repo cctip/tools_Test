@@ -41,17 +41,14 @@
 -keep interface com.google.gson.**{*;}
 
  #当前项目下的资源配置
- -keep class com.lucky.views.db.** {*;}
- -keep class com.lucky.views.rnmodule.** {*;}
- -keep class com.lucky.views.viewmodel.** {*;}
- -keep class com.lucky.views.widgets.** {*;}
- -keep class com.lucky.views.ui.** {*;}
+ -keep class com.hash.template.db.** {*;}
+ -keep class com.hash.template.rnmodule.ToolModule {
+    public *;
+ }
+ -keep class com.hash.template.databinding.** {*;}
+ -keep class com.hash.template.ui.** {*;}
 
 -keep public class * extends android.app.Application
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Fragment
--keep public class * extends android.app.Fragment
--keep public class * extends android.app.Service
 
 # appsflyer
 -keep class com.appsflyer.** { *; }

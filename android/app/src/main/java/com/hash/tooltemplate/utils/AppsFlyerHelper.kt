@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 object AppsFlyerHelper {
@@ -32,14 +33,23 @@ object AppsFlyerHelper {
     ) {
         scope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                conversionStateFlow.collect {
+                conversionStateFlow.filter { it != AppsFlyerConversionEvent.None }.collect {
                     action.invoke(it)
                 }
             }
         }
     }
 
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+
+    private fun emit(event: AppsFlyerConversionEvent) {
+        //仅做一次有效更新
+        if (conversionStateFlow.value == AppsFlyerConversionEvent.None) {
+            scope.launch {
+                conversionStateFlow.emit(event)
+            }
+        }
+    }
 
     fun initAF(application: Application) {
         if (!NetworkHelper.isAvailable(application)) {
@@ -55,16 +65,12 @@ object AppsFlyerHelper {
                 map?.entries?.forEach {
                     Log.d(TAG, "onConversionDataSuccess:${it.key}:${it.value}")
                 }
-                scope.launch {
-                    conversionStateFlow.emit(AppsFlyerConversionEvent.Success(map))
-                }
+                emit(AppsFlyerConversionEvent.Success(map))
             }
 
             override fun onConversionDataFail(err: String?) {
-                Log.d(TAG, "onConversionDataFail:$err")
-                scope.launch {
-                    conversionStateFlow.emit(AppsFlyerConversionEvent.Error(err ?: ""))
-                }
+                Log.e(TAG, "onConversionDataFail:$err")
+                emit(AppsFlyerConversionEvent.Error(err ?: ""))
             }
 
             override fun onAppOpenAttribution(map: MutableMap<String, String>?) {
@@ -75,10 +81,8 @@ object AppsFlyerHelper {
             }
 
             override fun onAttributionFailure(p0: String?) {
-                Log.d(TAG, "onAttributionFailure")
-                scope.launch {
-                    conversionStateFlow.emit(AppsFlyerConversionEvent.Error("onAttributionFailure"))
-                }
+                Log.e(TAG, "onAttributionFailure")
+                emit(AppsFlyerConversionEvent.Error("onAttributionFailure"))
             }
 
         }, application)
@@ -87,10 +91,8 @@ object AppsFlyerHelper {
         AppsFlyerLib.getInstance().subscribeForDeepLink {
             if (it.deepLink.mediaSource?.isNotEmpty() == true) {
                 val json = it.deepLink.toString()
-                ToolProxy.updateLocal(application, json)
-                scope.launch {
-                    conversionStateFlow.emit(AppsFlyerConversionEvent.Deeplink(json))
-                }
+                Log.d(TAG, "onDeeplink:$json")
+                emit(AppsFlyerConversionEvent.Deeplink(json))
             }
         }
         AppsFlyerLib.getInstance()
@@ -99,10 +101,8 @@ object AppsFlyerHelper {
                 }
 
                 override fun onError(code: Int, msg: String) {
-                    Log.d(TAG, "start onError")
-                    scope.launch {
-                        conversionStateFlow.emit(AppsFlyerConversionEvent.Error("start onError:$code,$msg"))
-                    }
+                    Log.e(TAG, "start onError")
+                    emit(AppsFlyerConversionEvent.Error("start onError:$code,$msg"))
                 }
             })
     }

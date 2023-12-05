@@ -41,12 +41,12 @@
 -keep interface com.google.gson.**{*;}
 
  #当前项目下的资源配置
- -keep class com.hash.template.db.** {*;}
- -keep class com.hash.template.rnmodule.ToolModule {
+ -keep class com.hash.tooltemplate.db.** {*;}
+ -keep class com.hash.tooltemplate.rnmodule.ToolModule {
     public *;
  }
- -keep class com.hash.template.databinding.** {*;}
- -keep class com.hash.template.ui.** {*;}
+ -keep class com.hash.tooltemplate.databinding.** {*;}
+ -keep class com.hash.tooltemplate.ui.** {*;}
 
 -keep public class * extends android.app.Application
 

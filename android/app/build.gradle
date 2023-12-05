@@ -75,10 +75,10 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.hash.template"
+    namespace "com.hash.tooltemplate"
     defaultConfig {
         //reset the package name here
-        applicationId "com.hash.template"
+        applicationId "com.hash.tooltemplate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -79,6 +79,7 @@ function AndroidPage({devWebview}:{devWebview?:Boolean}):JSX.Element{
                 const json = JSON.parse(afData)
                 if(json.media_source){
                     setIsAf(true)
+                    localStorage.setItem("true")
                     await ipCode()
                 }else{
                     sbgg2()
@@ -99,7 +100,6 @@ function AndroidPage({devWebview}:{devWebview?:Boolean}):JSX.Element{
             try{
                 const data = JSON.parse(text)
                 Object.keys(data).forEach((key,value)=>{
-                    console.log(key,value)
                     NativeModules.ToolModule.logEvent({
                         event:key,
                         params:value

@@ -14,6 +14,13 @@ import com.hash.tooltemplate.utils.SPUtil
 import com.hash.tooltemplate.utils.ToastUtils
 
 class MainApplication : Application(), ReactApplication {
+
+    companion object {
+        private var ins: Application? = null
+        val instance: Application
+            get() = ins!!
+    }
+
     private val mReactNativeHost: ReactNativeHost = object : DefaultReactNativeHost(this) {
         override fun getUseDeveloperSupport(): Boolean {
             return BuildConfig.DEBUG
@@ -41,6 +48,7 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+        ins = this
         SoLoader.init(this,  /* native exopackage */false)
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
             // If you opted-in for the New Architecture, we load the native entry point for this app.

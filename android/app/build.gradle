@@ -115,7 +115,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -146,6 +146,8 @@ dependencies {
     implementation 'com.github.duxl:FlycoRoundView:v2.1.1'
     implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14"
     implementation "com.airbnb.android:lottie:6.1.0"
+    //google ad id
+    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
     //room
     def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"

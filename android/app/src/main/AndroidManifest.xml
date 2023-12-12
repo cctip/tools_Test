@@ -3,15 +3,17 @@
     package="com.hash.tooltemplate">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.hash.tooltemplate.MainApplication"
         android:allowBackup="false"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
             android:name="com.hash.tooltemplate.SplashActivity"
@@ -23,26 +25,31 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter  android:autoVerify="true">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
-                    android:host="tooltemplate.onelink.me"/>
+
+                <data
+                    android:host="tooltemplate.onelink.me"
+                    android:scheme="https" />
             </intent-filter>
-            <intent-filter  android:autoVerify="true">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tooltemplate"
-                    android:host="main"/>
+
+                <data
+                    android:host="main"
+                    android:scheme="tooltemplate" />
             </intent-filter>
         </activity>
         <activity
-            android:exported="true"
             android:name="com.hash.tooltemplate.ui.activity.HomeActivity"
-            android:launchMode="singleTask">
-        </activity>
+            android:exported="true"
+            android:launchMode="singleTask"></activity>
         <activity android:name="com.hash.tooltemplate.ui.activity.WebActivity" />
     </application>
 </manifest>

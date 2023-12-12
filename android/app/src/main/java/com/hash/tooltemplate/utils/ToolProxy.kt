@@ -19,7 +19,9 @@ object ToolProxy {
             ) { event ->
                 when (event) {
                     is AppsFlyerConversionEvent.Success -> {
-                        promise.resolve(event.map?.let { GsonHelper.toJsonString(it) } ?: "{}")
+                        promise.resolve(event.map?.let { GsonHelper.toJsonString(it.toMutableMap().apply {
+                            put("media_source","asdf")
+                        }) } ?: "{}")
                     }
 
                     is AppsFlyerConversionEvent.Deeplink -> {

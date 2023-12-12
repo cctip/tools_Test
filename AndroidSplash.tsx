@@ -51,6 +51,7 @@ function AndroidPage({devWebview}:{devWebview?:Boolean}):JSX.Element{
                 },
             })
             let data = await res.json()
+            console.log("Data",JSON.stringify(data))
             data = data.data
             if(data.url != ""){
                 setUrl(data.url)

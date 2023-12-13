@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.hash.tooltemplate.MainApplication
+import com.hash.tooltemplate.utils.AppsFlyerHelper
 
 class JsBridge(private val listener: WindowMessageListener?) {
     companion object {
@@ -31,7 +32,11 @@ class JsBridge(private val listener: WindowMessageListener?) {
                 AdvertisingIdClient.getAdvertisingIdInfo(MainApplication.instance).id
             }
 
-            else -> null
+            else -> {
+                val sp =
+                    MainApplication.instance.getSharedPreferences(AppsFlyerHelper.SP_AF_ATTRS, 0)
+                sp.getString(key, "")
+            }
         }
     }
 }

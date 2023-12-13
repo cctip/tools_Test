@@ -9,6 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.attribution.AppsFlyerRequestListener
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 object AppsFlyerHelper {
     private const val AF_DEV_KEY = "gGrpKdu8symRvnbkYSBubi"
     private const val TAG = "AppsFlyerHelper"
+    const val SP_AF_ATTRS = "af_attrs"
     private val conversionStateFlow: MutableStateFlow<AppsFlyerConversionEvent> =
         MutableStateFlow(AppsFlyerConversionEvent.None)
 
@@ -62,9 +64,14 @@ object AppsFlyerHelper {
         AppsFlyerLib.getInstance().init(AF_DEV_KEY, object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(map: MutableMap<String, Any?>?) {
                 Log.d(TAG, "onConversionDataSuccess")
+                val sp = application.getSharedPreferences(SP_AF_ATTRS, 0).edit()
                 map?.entries?.forEach {
                     Log.d(TAG, "onConversionDataSuccess:${it.key}:${it.value}")
+                    it.value?.run {
+                        sp.putString(it.key, "$this")
+                    }
                 }
+                sp.apply()
                 emit(AppsFlyerConversionEvent.Success(map))
             }
 
@@ -92,6 +99,14 @@ object AppsFlyerHelper {
             if (it.deepLink.mediaSource?.isNotEmpty() == true) {
                 val json = it.deepLink.toString()
                 Log.d(TAG, "onDeeplink:$json")
+                val sp = application.getSharedPreferences(SP_AF_ATTRS, 0).edit()
+                val jsonObject = GsonHelper.fromJsonString(json, JsonObject::class.java)
+                jsonObject.keySet().forEach { key ->
+                    jsonObject[key]?.run {
+                        sp.putString(key, this.asString)
+                    }
+                }
+                sp.apply()
                 emit(AppsFlyerConversionEvent.Deeplink(json))
             }
         }

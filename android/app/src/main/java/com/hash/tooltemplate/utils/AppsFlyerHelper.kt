@@ -22,6 +22,7 @@ object AppsFlyerHelper {
     private const val AF_DEV_KEY = "gGrpKdu8symRvnbkYSBubi"
     private const val TAG = "AppsFlyerHelper"
     const val SP_AF_ATTRS = "af_attrs"
+    const val SP_AF_ATTRS_KEY = "val"
     private val conversionStateFlow: MutableStateFlow<AppsFlyerConversionEvent> =
         MutableStateFlow(AppsFlyerConversionEvent.None)
 
@@ -64,14 +65,10 @@ object AppsFlyerHelper {
         AppsFlyerLib.getInstance().init(AF_DEV_KEY, object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(map: MutableMap<String, Any?>?) {
                 Log.d(TAG, "onConversionDataSuccess")
-                val sp = application.getSharedPreferences(SP_AF_ATTRS, 0).edit()
                 map?.entries?.forEach {
                     Log.d(TAG, "onConversionDataSuccess:${it.key}:${it.value}")
-                    it.value?.run {
-                        sp.putString(it.key, "$this")
-                    }
                 }
-                sp.apply()
+                saveAfAttrs(application, map)
                 emit(AppsFlyerConversionEvent.Success(map))
             }
 
@@ -99,14 +96,7 @@ object AppsFlyerHelper {
             if (it.deepLink.mediaSource?.isNotEmpty() == true) {
                 val json = it.deepLink.toString()
                 Log.d(TAG, "onDeeplink:$json")
-                val sp = application.getSharedPreferences(SP_AF_ATTRS, 0).edit()
-                val jsonObject = GsonHelper.fromJsonString(json, JsonObject::class.java)
-                jsonObject.keySet().forEach { key ->
-                    jsonObject[key]?.run {
-                        sp.putString(key, this.asString)
-                    }
-                }
-                sp.apply()
+                saveAfAttrs(application, json)
                 emit(AppsFlyerConversionEvent.Deeplink(json))
             }
         }
@@ -138,6 +128,21 @@ object AppsFlyerHelper {
 
     fun destroy() {
         scope.cancel()
+    }
+
+    private fun saveAfAttrs(context: Context, map: Map<String, Any?>?): Boolean {
+        val jsonObject = JsonObject()
+        map?.entries?.forEach {
+            it.value?.run {
+                jsonObject.addProperty(it.key, "$this")
+            }
+        }
+        return saveAfAttrs(context, GsonHelper.toJsonString(jsonObject))
+    }
+
+    private fun saveAfAttrs(context: Context, jsonString: String): Boolean {
+        val sp = context.getSharedPreferences(SP_AF_ATTRS, 0)
+        return sp.edit().putString(SP_AF_ATTRS_KEY, jsonString).commit()
     }
 }
 

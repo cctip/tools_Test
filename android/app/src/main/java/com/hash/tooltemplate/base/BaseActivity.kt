@@ -9,8 +9,11 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
+    private lateinit var _binding:T
+    protected val binding get() = _binding
 
     private var permissionContract: ActivityResultLauncher<Array<String>>? = null
 
@@ -20,8 +23,10 @@ open class BaseActivity : AppCompatActivity() {
                 onPermissionsGranted(it)
             }
         super.onCreate(savedInstanceState)
+        _binding=getViewBinding()
+        setContentView(_binding.root)
         immersiveStatusBar()
-    }
+        initData()    }
 
     open fun onPermissionsGranted(permissions: Map<String, Boolean>) {
 
@@ -36,7 +41,8 @@ open class BaseActivity : AppCompatActivity() {
     protected fun immersiveStatusBar() {
         immersive(window)
     }
-
+    protected abstract fun getViewBinding():T
+    protected abstract fun initData()
     companion object {
         @JvmStatic
         fun immersive(window: Window) {

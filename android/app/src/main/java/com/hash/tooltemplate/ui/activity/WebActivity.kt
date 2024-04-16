@@ -10,8 +10,9 @@ import android.webkit.WebView
 import androidx.appcompat.widget.Toolbar
 import com.hash.tooltemplate.R
 import com.hash.tooltemplate.base.BaseActivity
+import com.hash.tooltemplate.databinding.ActivityWebBinding
 
-class WebActivity : BaseActivity() {
+class WebActivity : BaseActivity<ActivityWebBinding>() {
 
     private lateinit var toolbar: Toolbar
     private var webView: WebView? = null
@@ -37,6 +38,11 @@ class WebActivity : BaseActivity() {
         } ?: kotlin.run {
             finish()
         }
+    }
+
+    override fun getViewBinding(): ActivityWebBinding = ActivityWebBinding.inflate(layoutInflater)
+    override fun initData() {
+
     }
 
     override fun onDestroy() {

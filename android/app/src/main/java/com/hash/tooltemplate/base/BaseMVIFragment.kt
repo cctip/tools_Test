@@ -10,8 +10,8 @@ import com.hash.tooltemplate.BuildConfig
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseMVIFragment<UIData, VM : MVIViewModel<UIData>, VB : ViewBinding>(@LayoutRes layoutRes:Int) :
-    BaseFragment<VB>(layoutRes) {
+abstract class BaseMVIFragment<UIData, VM : MVIViewModel<UIData>, VB : ViewBinding>() :
+    BaseFragment<VB>() {
     protected val viewModel: VM by lazy { initViewModel() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

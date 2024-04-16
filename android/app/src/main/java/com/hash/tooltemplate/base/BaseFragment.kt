@@ -14,35 +14,43 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<VB : ViewBinding>(@LayoutRes val layoutRes: Int) : Fragment() {
+abstract class BaseFragment<T : ViewBinding> : Fragment() {
+    private lateinit var _binding: T
+    protected val binding get() = _binding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = getViewBinding(inflater, container)
+        initData()
+        return _binding.root
+    }
 
+    protected abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): T
+    protected abstract fun initData()
     companion object {
         const val KEY_INTERNAL_REQUEST_CODE = "internalRequestCode"
     }
 
     private var firstResume: Boolean = true
-    private var bindingInner: VB? = null
-    protected val binding: VB
-        get() {
-            return bindingInner ?: throw IllegalStateException("destroyed binding")
-        }
+    private var bindingInner: T? = null
 
     private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
-    open fun bindView(view: View): VB? = null
+    open fun bindView(view: View): T? = null
 
-    open fun initViewBindingByReflection(view: View, bindingClassIndex: Int = 0): VB {
+    open fun initViewBindingByReflection(view: View, bindingClassIndex: Int = 0): T {
         val genericSuperClass = this::class.java.genericSuperclass
         if (genericSuperClass is ParameterizedType) {
             val actualTypeArguments = genericSuperClass.actualTypeArguments
             val bindingClass = actualTypeArguments[bindingClassIndex] as Class<*>
             val method = bindingClass.getMethod("bind", View::class.java)
-            return method.invoke(null, view) as VB
+            return method.invoke(null, view) as T
         } else {
             throw IllegalArgumentException("invalid ViewBindClass")
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         intentLauncher =
@@ -54,7 +62,6 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes val layoutRes: Int) : F
                 )
             }
     }
-
     open fun onCommonActivityResult(resultCode: Int, requestCode: Int, intent: Intent?) {
 
     }
@@ -63,7 +70,6 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes val layoutRes: Int) : F
         intent.putExtra(KEY_INTERNAL_REQUEST_CODE, requestCode)
         intentLauncher.launch(intent)
     }
-
 
     fun addViewBackListener(view: View) {
         view.setOnClickListener {
@@ -75,14 +81,6 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes val layoutRes: Int) : F
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(layoutRes, container, false)
-        bindingInner = bindView(view) ?: initViewBindingByReflection(view)
-        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

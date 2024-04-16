@@ -1,6 +1,8 @@
 package com.hash.tooltemplate.ui.fragment
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.hash.tooltemplate.R
 import com.hash.tooltemplate.ui.dialog.CustomDialog
 import com.hash.tooltemplate.base.BaseMVIFragment
@@ -38,7 +40,7 @@ class TestViewModel : MVIViewModel<UI>(UI()) {
 }
 
 class TestFragment :
-    BaseMVIFragment<UI, TestViewModel, FragmentTestBinding>(R.layout.fragment_test) {
+    BaseMVIFragment<UI, TestViewModel, FragmentTestBinding>() {
 
     override fun initView(view: View) {
         super.initView(view)
@@ -62,6 +64,15 @@ class TestFragment :
     override fun onError(throwable: Throwable) {
         super.onError(throwable)
         binding.textview.text = throwable.message
+    }
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTestBinding = FragmentTestBinding.inflate(layoutInflater)
+
+    override fun initData() {
+
     }
 
     override fun onLoadingState(loadState: LoadState?) {

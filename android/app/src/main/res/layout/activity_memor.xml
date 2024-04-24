@@ -86,6 +86,7 @@
         app:layout_constraintVertical_bias="0.192" />
 
     <TextView
+        android:id="@+id/memorstart"
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:background="@mipmap/buttonbg"

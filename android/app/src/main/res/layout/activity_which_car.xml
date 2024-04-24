@@ -11,7 +11,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/back"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/whickcarrec"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,32 +21,34 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/whickcarrec"
         android:layout_width="370dp"
-        android:layout_height="560dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_height="260dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.192" />
+        app:layout_constraintVertical_bias="0.272" />
+
     <TextView
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:background="@mipmap/buttonbg"
-        android:text="Start"
-        android:textStyle="bold"
-        android:textColor="#ffffffff"
         android:gravity="center"
+        android:text="Start"
+        android:textColor="#ffffffff"
         android:textSize="24dp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:layout_constraintVertical_bias="0.131" />
+        app:layout_constraintTop_toBottomOf="@+id/whickcarrec"
+        app:layout_constraintVertical_bias="0.565" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="0.647" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/checkpointtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="120dp"

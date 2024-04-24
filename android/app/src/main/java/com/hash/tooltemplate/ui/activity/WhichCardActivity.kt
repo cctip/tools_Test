@@ -1,14 +1,12 @@
 package com.hash.tooltemplate.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hash.tooltemplate.R
 import com.hash.tooltemplate.base.BaseActivity
 import com.hash.tooltemplate.databinding.ActivityWhichCardBinding
-import com.hash.tooltemplate.ui.adapter.GridAdapter
-import com.hash.tooltemplate.ui.adapter.GridItem
+import com.hash.tooltemplate.ui.adapter.WhichCardAdapter
+import com.hash.tooltemplate.ui.adapter.WhichCardItem
 
 class WhichCardActivity : BaseActivity<ActivityWhichCardBinding>() {
     private lateinit var recyclerView: RecyclerView
@@ -19,21 +17,21 @@ class WhichCardActivity : BaseActivity<ActivityWhichCardBinding>() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
 
-        val gridItems = listOf(
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
-            GridItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+        val whichcardItems = listOf(
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
+            WhichCardItem(R.mipmap.mysteriouscard, R.mipmap.memoritembg),
         )
-        val adapter = GridAdapter(gridItems)
+        val adapter = WhichCardAdapter(whichcardItems)
         recyclerView.adapter = adapter
         binding.memorback.setOnClickListener {
             finish()

@@ -8,9 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hash.tooltemplate.R
 import java.util.Random
 
-data class WhichCardItem(val imageRes1: Int, val imageRes2: Int)
-
-class WhichCardAdapter(private val items: List<WhichCardItem>) : RecyclerView.Adapter<WhichCardAdapter.ViewHolder>() {
+data class WhichCardItem(val imageRes1: Int, val imageRes2: Int,var isClicked: Boolean = false)
+interface DialogClickListenerCard {
+    fun onDeathDialogClick()
+    fun onWinDialogClick()
+}
+class WhichCardAdapter(private val items: List<WhichCardItem>,private val dialogClickListener: DialogClickListenerCard) : RecyclerView.Adapter<WhichCardAdapter.ViewHolder>() {
+    private var DeathClick = 0
+    private var WinClick = 0
+    private val clickedFlags = BooleanArray(items.size)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_whichcard, parent, false)
@@ -24,16 +30,28 @@ class WhichCardAdapter(private val items: List<WhichCardItem>) : RecyclerView.Ad
 
         // 为第一个图片设置点击事件
         holder.cardImage.setOnClickListener {
-            // 随机选择要显示的图片
-            val random = Random()
-            val randomNumber = random.nextInt(12) // 生成 0 到 11 之间的随机数
-            if (randomNumber < 8) {
-                // 显示第一种图片
-                holder.cardImage.setImageResource(R.mipmap.island)
-            } else {
-                // 显示第二种图片
-                holder.cardImage.setImageResource(R.mipmap.bom)
+            if (!clickedFlags[position]) {
+                // 随机选择要显示的图片
+                val random = Random()
+                val randomNumber = random.nextInt(12) // 生成 0 到 11 之间的随机数
+                if (randomNumber < 8) {
+                    // 显示第一种图片
+                    holder.cardImage.setImageResource(R.mipmap.island)
+                    WinClick++
+                    if(WinClick==7){
+                        dialogClickListener.onWinDialogClick()
+                    }
+                } else {
+                    // 显示第二种图片
+                    holder.cardImage.setImageResource(R.mipmap.bom)
+                    DeathClick++
+                    if(DeathClick==3){
+                        dialogClickListener.onDeathDialogClick()
+                    }
+                }
+                clickedFlags[position] = true
             }
+
         }
     }
 

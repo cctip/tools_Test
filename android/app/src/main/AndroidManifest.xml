@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MainApplication"
@@ -16,6 +17,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity
+            android:name=".ui.activity.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dialog.DeathDialog"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dialog.WinDialog"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.WhichCarComeActivity"
             android:exported="false" />

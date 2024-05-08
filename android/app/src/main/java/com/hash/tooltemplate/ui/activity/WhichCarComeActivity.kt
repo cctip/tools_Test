@@ -1,14 +1,23 @@
 package com.hash.tooltemplate.ui.activity
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.graphics.drawable.ColorDrawable
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.hash.tooltemplate.R
 import com.hash.tooltemplate.base.BaseActivity
 import com.hash.tooltemplate.databinding.ActivityWhichCarComeBinding
 import com.hash.tooltemplate.ui.adapter.PlayCarAdapter
+import com.hash.tooltemplate.ui.dialog.DeathDialog
+import com.hash.tooltemplate.ui.dialog.WinDialog
 import java.util.Timer
 import java.util.TimerTask
 
@@ -16,13 +25,18 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
     private lateinit var imagePagerAdapter: PlayCarAdapter
     private var currentIndex = 0
     private var lastPosition = 0
+    private val handler = Handler(Looper.getMainLooper())
     private var autoScrollTimer: Timer? = null
+    private var lastClickedImageResourceId = 0
+
+
     override fun getViewBinding(): ActivityWhichCarComeBinding = ActivityWhichCarComeBinding.inflate(layoutInflater)
 
     override fun initData() {
-        val lastClickedImageResourceId = intent.getIntExtra("lastClickedImageResourceId", 0)
+        lastClickedImageResourceId = intent.getIntExtra("lastClickedImageResourceId", 0)
         binding.carcomeimg.setImageResource(lastClickedImageResourceId)
-        binding.pager.isUserInputEnabled=false
+        binding.pager.isUserInputEnabled = false
+        Log.i("AutoScroll",lastClickedImageResourceId.toString())
         binding.whichcarcomeback.setOnClickListener {
             finish()
         }
@@ -37,7 +51,6 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
         )
         // 打乱图片顺序
         val shuffledImageList = imageList.toList().shuffled().toTypedArray()
-        // 设置初始位置为足够大的值的中间位置
         val middlePosition = Int.MAX_VALUE / 2
         binding.pager.setCurrentItem(middlePosition, false)
         imagePagerAdapter = PlayCarAdapter(this, shuffledImageList)
@@ -100,9 +113,61 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
         val currentImageIndex = currentIndex % imagePagerAdapter.itemCount
         // 从适配器中获取对应的图片ID
         val currentImageResourceId = imagePagerAdapter.getImageResourceId(currentImageIndex)
-        Log.i("AutoScroll", "Current Image Resource ID: $currentImageResourceId")
-        //粉色93红95绿96黄94蓝97紫92
-
+        Log.i("AutoScroll", currentImageResourceId.toString())
+        if(lastClickedImageResourceId==currentImageResourceId){
+            Handler().postDelayed({
+                onWin()
+            },1000)
+        }else{
+            Handler().postDelayed({
+                onDeaful()
+            },1000)
+        }
+    }
+    fun onWin(){
+        Handler().postDelayed({
+            // 获取 WindowManager
+            val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+            // 创建半透明背景
+            val grayBackground = View(this@WhichCarComeActivity)
+            grayBackground.setBackgroundColor(Color.parseColor("#80000000")) // 半透明灰色
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            layoutParams.format = PixelFormat.TRANSLUCENT
+            windowManager.addView(grayBackground, layoutParams)
+            val winDialog = WinDialog( context = this@WhichCarComeActivity,)
+            winDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            winDialog.setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
+            winDialog.show()
+        }, 1000L)
+    }
+    fun onDeaful(){
+        // 获取 WindowManager
+        val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        // 创建半透明背景
+        val grayBackground = View(this@WhichCarComeActivity)
+        grayBackground.setBackgroundColor(Color.parseColor("#80000000")) // 半透明灰色
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        layoutParams.format = PixelFormat.TRANSLUCENT
+        windowManager.addView(grayBackground, layoutParams)
+        val defeatDialog = DeathDialog( context = this@WhichCarComeActivity)
+        defeatDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        defeatDialog.setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
+        defeatDialog.show()
+    }
+    override fun onDestroy() {
+        // 停止计时器并移除所有未执行的任务
+        autoScrollTimer?.cancel()
+        autoScrollTimer = null
+        handler.removeCallbacksAndMessages(null)
+        super.onDestroy()
     }
     private fun setControlsEnabled(view: View, enabled: Boolean) {
         if (view is ViewGroup) {

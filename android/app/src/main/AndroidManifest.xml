@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.hash.tooltemplate">
+    package="com.relicroverblack.relicrovergo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".MainApplication"
+        android:name="com.relicroverblack.relicrovergo.MainApplication"
         android:allowBackup="false"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,28 +18,28 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui.activity.DetailsActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.dialog.DeathDialog"
+            android:name="com.relicroverblack.relicrovergo.ui.dialog.DeathDialog"
             android:exported="false" />
         <activity
-            android:name=".ui.dialog.WinDialog"
+            android:name="com.relicroverblack.relicrovergo.ui.dialog.WinDialog"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.WhichCarComeActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCarComeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.WhichCarActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCarActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.WhichCardActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCardActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.MemorActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.MemorActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.relicroverblack.relicrovergo.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
@@ -66,7 +66,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name="com.relicroverblack.relicrovergo.ui.activity.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -75,7 +75,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.WebActivity" />
+        <activity android:name="com.relicroverblack.relicrovergo.ui.activity.WebActivity" />
     </application>
 
 </manifest>

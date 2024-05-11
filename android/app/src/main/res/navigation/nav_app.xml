@@ -6,12 +6,12 @@
 
     <fragment
         android:id="@+id/fragment_test"
-        android:name="com.hash.tooltemplate.ui.fragment.TestFragment"
+        android:name="com.relicroverblack.relicrovergo.ui.fragment.TestFragment"
         android:label="TestFragment" />
 
     <dialog
         android:id="@+id/dialog_test"
-        android:name="com.hash.tooltemplate.ui.dialog.TestDialog"
+        android:name="com.relicroverblack.relicrovergo.ui.dialog.TestDialog"
         android:label="TestDialog" >
         <deepLink app:uri="app://test_dialog"/>
     </dialog>

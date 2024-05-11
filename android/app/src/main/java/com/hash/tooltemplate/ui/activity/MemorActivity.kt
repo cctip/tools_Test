@@ -1,5 +1,6 @@
 package com.hash.tooltemplate.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
@@ -90,6 +91,8 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
         recyclerView.adapter = adapter
         binding.memorback.setOnClickListener {
             finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
     override fun onDeathDialogClick() {

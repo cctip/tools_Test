@@ -1,5 +1,6 @@
 package com.hash.tooltemplate.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
@@ -82,6 +83,8 @@ class WhichCardActivity : BaseActivity<ActivityWhichCardBinding>() {
         recyclerView.adapter = adapter
         binding.memorback.setOnClickListener {
             finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
     fun calculateProgress(value: Int): Int {

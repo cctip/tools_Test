@@ -1,6 +1,7 @@
 package com.hash.tooltemplate.ui.activity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
@@ -39,6 +40,8 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
         Log.i("AutoScroll",lastClickedImageResourceId.toString())
         binding.whichcarcomeback.setOnClickListener {
             finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
 
         val imageList = arrayOf(

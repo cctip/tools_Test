@@ -19,6 +19,8 @@ class WhichCarActivity : BaseActivity<ActivityWhichCarBinding>() {
         binding.whichcarstart.isClickable = false
         binding.memorback.setOnClickListener {
             finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
 
         binding.whickcarrec.layoutManager = GridLayoutManager(this, 3)

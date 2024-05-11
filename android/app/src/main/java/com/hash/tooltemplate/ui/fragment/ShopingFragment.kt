@@ -26,26 +26,18 @@ class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
-        ItemModel(R.mipmap.yellowcar),
-        ItemModel(R.mipmap.aeroplane),
-        ItemModel(R.mipmap.orangecar)
     )
+
     private val itemList2 = mutableListOf(
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
-        ItemModel(R.mipmap.yellowcar),
-        ItemModel(R.mipmap.aeroplane),
-        ItemModel(R.mipmap.orangecar)
     )
 
     private val itemList3 = mutableListOf(
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
         ItemModel(R.mipmap.cloud),
-        ItemModel(R.mipmap.yellowcar),
-        ItemModel(R.mipmap.aeroplane),
-        ItemModel(R.mipmap.orangecar)
     )
     private val recyclerViews = mutableListOf<RecyclerView>()
     private lateinit var recyclerViewAdapter1: GameAdapter
@@ -90,38 +82,86 @@ class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
             ShopTop(R.mipmap.memorwhite, R.mipmap.memoritembg),
         )
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-        adapter = HorizontalAdapter(shoptopitems, sharedPreferences)
+        adapter = HorizontalAdapter(shoptopitems, sharedPreferences, itemList1, itemList2, itemList3, recyclerViewAdapter1,recyclerViewAdapter2,recyclerViewAdapter3,this)
         binding.shopprec.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.shopprec.layoutManager = layoutManager
-//        adapter.updateDisplayCounts(PreferenceManager.getDefaultSharedPreferences(requireContext()))
-
+        if (itemList3.all { it.isReplaced }) {
+            binding.blackspin.visibility = View.GONE
+        }
     }
-//    private fun updateListWithImage(imageRes1: Int, imageRes2: Int, context: Context) {
-//        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-//        val displayedImageId = sharedPreferences.getInt("displayed_image", 0)
-//
-//        // 更新适配器中的数据
-//        adapter.addItem(ShopTop(imageRes1, imageRes2, sharedPreferences.getInt("image_$displayedImageId", 0)))
-//         adapter.updateItem(adapter.itemCount - 1, sharedPreferences.getInt("image_$displayedImageId", 0))
-//    }
+    fun someMethod(){
+        binding.blackspin.visibility = View.GONE
+    }
+
 }
-data class ShopTop(val imageRes1: Int, val imageRes2: Int, var clickCount: Int = 0)
-class HorizontalAdapter(private val items: MutableList<ShopTop>, private val sharedPreferences: SharedPreferences) : RecyclerView.Adapter<HorizontalAdapter.ViewHolder>() {
+data class ShopTop(
+    val imageRes1: Int,
+    val imageRes2: Int,
+    var clickCount: Int = 0,
+) {
+    fun decreaseClickCountAndChangeImage(itemList: MutableList<ItemModel>, newImageRes: Int) {
+        if (clickCount > 0 && itemList.isNotEmpty()) {
+            val firstNotReplacedIndex = itemList.indexOfFirst { !it.isReplaced }
+            if (firstNotReplacedIndex != -1) {
+                clickCount--
+                itemList[firstNotReplacedIndex] = ItemModel(newImageRes, true)
+            }
+        }
+    }
+}
+class HorizontalAdapter(private val items: MutableList<ShopTop>,
+                        private val sharedPreferences: SharedPreferences,
+                        private val itemList1: MutableList<ItemModel>,
+                        private val itemList2: MutableList<ItemModel>,
+                        private val itemList3: MutableList<ItemModel>,
+                        private val itemClickListener: ItemClickListener,
+                        private val itemClickListener2: ItemClickListener,
+                        private val itemClickListener3: ItemClickListener,
+                        private val fragment: ShopingFragment
+) : RecyclerView.Adapter<HorizontalAdapter.ViewHolder>() {
 
-//    fun updateDisplayCounts(sharedPreferences: SharedPreferences) {
-//        for (item in items) {
-//            val displayCount = sharedPreferences.getInt("displayed_image", 0)
-//            if(displayCount==item.imageRes1){
-//                item.clickCount+=1
-//                Log.i("clickCounttoString",item.clickCount.toString())
-//            }
-//            Log.i("ClickCountUpdate", "Item: ${item.imageRes1}, Click Count: $displayCount")
-//        }
-//        notifyDataSetChanged()
-//    }
+    interface ItemClickListener {
+        fun onItemClick(item: ShopTop)
+    }
 
+    fun updateItemList1WithClickedItem(item: ShopTop) {
+        val clickedItemIndex = items.indexOf(item)
+        if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
+            val clickedItem = items[clickedItemIndex]
+            clickedItem.decreaseClickCountAndChangeImage(itemList1, clickedItem.imageRes1)
+            if (itemList1.all { it.isReplaced }) {
+                updateItemList2WithClickedItem(item)
+            } else {
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun updateItemList2WithClickedItem(item: ShopTop) {
+        val clickedItemIndex = items.indexOf(item)
+        if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
+            val clickedItem = items[clickedItemIndex]
+            clickedItem.decreaseClickCountAndChangeImage(itemList2, clickedItem.imageRes1)
+            if (itemList2.all { it.isReplaced }) {
+                updateItemList3WithClickedItem(item)
+            } else {
+                notifyDataSetChanged()
+            }
+        }
+    }
+    fun updateItemList3WithClickedItem(item: ShopTop) {
+        val clickedItemIndex = items.indexOf(item)
+        if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
+            val clickedItem = items[clickedItemIndex]
+            clickedItem.decreaseClickCountAndChangeImage(itemList3, clickedItem.imageRes1)
+            if (itemList3.all { it.isReplaced }) {
+                fragment.someMethod()
+            } else {
+                notifyDataSetChanged()
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shoptop, parent, false)
@@ -132,16 +172,28 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>, private val sha
         val item = items[position]
         holder.imageView1.setImageResource(item.imageRes1)
         holder.imageView2.setImageResource(item.imageRes2)
-            val displayCount = sharedPreferences.getInt("displayed_image", 0)
-            if(displayCount==item.imageRes1){
-                item.clickCount+=1
-                Log.i("clickCounttoString",item.clickCount.toString())
-            }
-            Log.i("ClickCountUpdate", "Item: ${item.imageRes1}, Click Count: $displayCount")
-        Log.i("displayCountTextView", item.clickCount.toString())
-        holder.displayCountTextView.text = item.clickCount.toString()
-    }
 
+        val currentDisplayCount = sharedPreferences.getInt("image_${item.imageRes1}", 0)
+
+        // 更新点击次数逻辑
+        if (currentDisplayCount == item.imageRes1) {
+            item.clickCount += 1
+            Log.i("clickCounttoString", item.clickCount.toString())
+        }
+        // 将更新后的点击次数保存到 SharedPreferences
+        sharedPreferences.edit().putInt("image_${item.imageRes1}", item.clickCount).apply()
+        // 设置展示次数到 TextView
+        holder.displayCountTextView.text = item.clickCount.toString()
+        holder.itemView.setOnClickListener {
+            updateItemList1WithClickedItem(item)
+            itemClickListener.onItemClick(item)
+            itemClickListener2.onItemClick(item)
+            itemClickListener3.onItemClick(item)
+        }
+        // 记录日志
+        Log.i("ClickCountUpdate", "Item: ${item.imageRes1}, Click Count: ${item.clickCount}")
+        Log.i("displayCountTextView", item.clickCount.toString())
+    }
     override fun getItemCount(): Int {
         return items.size
     }
@@ -153,10 +205,8 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>, private val sha
     }
 }
 
-data class ItemModel(val imageResId: Int)
-class GameAdapter (private val items: List<ItemModel>) :
-    RecyclerView.Adapter<GameAdapter.ViewHolder>() {
-
+data class ItemModel(val imageResId: Int, var isReplaced: Boolean = false)
+class GameAdapter(private val items: MutableList<ItemModel>) : RecyclerView.Adapter<GameAdapter.ViewHolder>(), HorizontalAdapter.ItemClickListener {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -172,5 +222,10 @@ class GameAdapter (private val items: List<ItemModel>) :
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+
+    override fun onItemClick(item: ShopTop) {
+        notifyDataSetChanged()
     }
 }

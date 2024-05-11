@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import com.hash.tooltemplate.R
 import com.hash.tooltemplate.ui.activity.HomeActivity
 import com.hash.tooltemplate.ui.activity.MemorActivity
+import com.hash.tooltemplate.ui.activity.WhichCarActivity
 import com.hash.tooltemplate.ui.activity.WhichCarComeActivity
 import com.hash.tooltemplate.ui.activity.WhichCardActivity
 
@@ -42,7 +43,7 @@ class DeathDialog(context: Context) : AlertDialog(context) {
                     Intent(activity, WhichCardActivity::class.java)
                 }
                 is WhichCarComeActivity -> {
-                    Intent(activity, WhichCardActivity::class.java)
+                    Intent(activity, WhichCarActivity::class.java)
                 }
                 else -> {
                     null

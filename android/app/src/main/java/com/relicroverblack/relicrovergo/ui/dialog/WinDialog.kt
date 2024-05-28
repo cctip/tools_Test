@@ -40,15 +40,16 @@ class WinDialog(context: Context) : AlertDialog(context) {
         editor.apply()
     }
     // 更新图片的展示次数
-    private fun updateDisplayCount(imageIndex: Int, context: Context) {
+    // 更新图片的展示次数
+    private fun updateDisplayCount(imageResId: Int, context: Context) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val editor = sharedPreferences.edit()
-        // 获取图片展示次数并增加
-        val displayCount = sharedPreferences.getInt("$imageIndex", 0) + 1
-        Log.i("sharedPreferences","$imageIndex")
-        Log.i("sharedPreferences",displayCount.toString())
-        // 将更新后的展示次数保存到 SharedPreferences 中
-        editor.putInt("image_$imageIndex", displayCount)
-        editor.apply()
+        val displayCount = sharedPreferences.getInt("image_$imageResId", 0) + 1
+        with(sharedPreferences.edit()) {
+            putInt("image_$imageResId", displayCount)
+            apply()
+        }
+        Log.i("sharedPreferences","image_$imageResId")
+        Log.i("sharedPreferences","Display count updated: $displayCount")
     }
+
 }

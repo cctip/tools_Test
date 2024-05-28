@@ -99,16 +99,20 @@ data class ShopTop(
     val imageRes2: Int,
     var clickCount: Int = 0,
 ) {
-    fun decreaseClickCountAndChangeImage(itemList: MutableList<ItemModel>, newImageRes: Int) {
+    fun decreaseClickCountAndChangeImage(itemList: MutableList<ItemModel>, newImageRes: Int, sharedPreferences: SharedPreferences) {
         if (clickCount > 0 && itemList.isNotEmpty()) {
             val firstNotReplacedIndex = itemList.indexOfFirst { !it.isReplaced }
             if (firstNotReplacedIndex != -1) {
                 clickCount--
                 itemList[firstNotReplacedIndex] = ItemModel(newImageRes, true)
+
+                // 更新SharedPreferences
+                sharedPreferences.edit().putInt("image_${imageRes1}", clickCount).apply()
             }
         }
     }
 }
+
 class HorizontalAdapter(private val items: MutableList<ShopTop>,
                         private val sharedPreferences: SharedPreferences,
                         private val itemList1: MutableList<ItemModel>,
@@ -128,7 +132,7 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>,
         val clickedItemIndex = items.indexOf(item)
         if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
             val clickedItem = items[clickedItemIndex]
-            clickedItem.decreaseClickCountAndChangeImage(itemList1, clickedItem.imageRes1)
+            clickedItem.decreaseClickCountAndChangeImage(itemList1, clickedItem.imageRes1, sharedPreferences)
             if (itemList1.all { it.isReplaced }) {
                 updateItemList2WithClickedItem(item)
             } else {
@@ -141,7 +145,7 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>,
         val clickedItemIndex = items.indexOf(item)
         if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
             val clickedItem = items[clickedItemIndex]
-            clickedItem.decreaseClickCountAndChangeImage(itemList2, clickedItem.imageRes1)
+            clickedItem.decreaseClickCountAndChangeImage(itemList2, clickedItem.imageRes1, sharedPreferences)
             if (itemList2.all { it.isReplaced }) {
                 updateItemList3WithClickedItem(item)
             } else {
@@ -149,11 +153,12 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>,
             }
         }
     }
+
     fun updateItemList3WithClickedItem(item: ShopTop) {
         val clickedItemIndex = items.indexOf(item)
         if (clickedItemIndex != -1 && items[clickedItemIndex].clickCount > 0) {
             val clickedItem = items[clickedItemIndex]
-            clickedItem.decreaseClickCountAndChangeImage(itemList3, clickedItem.imageRes1)
+            clickedItem.decreaseClickCountAndChangeImage(itemList3, clickedItem.imageRes1, sharedPreferences)
             if (itemList3.all { it.isReplaced }) {
                 fragment.someMethod()
             } else {
@@ -172,27 +177,24 @@ class HorizontalAdapter(private val items: MutableList<ShopTop>,
         holder.imageView1.setImageResource(item.imageRes1)
         holder.imageView2.setImageResource(item.imageRes2)
 
+        // 获取当前图片的显示次数
         val currentDisplayCount = sharedPreferences.getInt("image_${item.imageRes1}", 0)
 
-        // 更新点击次数逻辑
-        if (currentDisplayCount == item.imageRes1) {
-            item.clickCount += 1
-            Log.i("clickCounttoString", item.clickCount.toString())
-        }
-        // 将更新后的点击次数保存到 SharedPreferences
-        sharedPreferences.edit().putInt("image_${item.imageRes1}", item.clickCount).apply()
         // 设置展示次数到 TextView
-        holder.displayCountTextView.text = item.clickCount.toString()
+        holder.displayCountTextView.text = currentDisplayCount.toString()
+
         holder.itemView.setOnClickListener {
+            // Item点击逻辑
             updateItemList1WithClickedItem(item)
             itemClickListener.onItemClick(item)
             itemClickListener2.onItemClick(item)
             itemClickListener3.onItemClick(item)
         }
+
         // 记录日志
-        Log.i("ClickCountUpdate", "Item: ${item.imageRes1}, Click Count: ${item.clickCount}")
-        Log.i("displayCountTextView", item.clickCount.toString())
+        Log.i("displayCountUpdate", "Item: ${item.imageRes1}, Display Count: $currentDisplayCount")
     }
+
     override fun getItemCount(): Int {
         return items.size
     }

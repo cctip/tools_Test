@@ -1,11 +1,19 @@
 package com.relicroverblack.relicrovergo.ui.fragment
 
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.relicroverblack.relicrovergo.R
 import com.relicroverblack.relicrovergo.base.BaseFragment
 import com.relicroverblack.relicrovergo.databinding.FragmentShopingBinding
+import com.relicroverblack.relicrovergo.ui.dialog.DeathDialog
+import java.util.Random
 
 class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
     private lateinit var adapter: HorizontalAdapter
@@ -56,6 +66,7 @@ class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
         }
         adapter.notifyDataSetChanged()
     }
+    @SuppressLint("ServiceCast")
     override fun initData() {
         recyclerViewAdapter1 = GameAdapter(itemList1)
         recyclerViewAdapter2 = GameAdapter(itemList2)
@@ -85,12 +96,69 @@ class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
         binding.shopprec.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.shopprec.layoutManager = layoutManager
-        if (itemList3.all { it.isReplaced }) {
-            binding.blackspin.visibility = View.GONE
+        binding.spin.setOnClickListener {
+            binding.spin.visibility = View.GONE
+            binding.blackspin.visibility=View.VISIBLE
+            startScrollAnimation(recyclerViews)
+            Handler().postDelayed({
+                // 在 Fragment 中使用 WindowManager 添加视图
+                val windowManager = requireActivity().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val grayBackground = View(requireContext())
+                grayBackground.setBackgroundColor(Color.parseColor("#80000000")) // 半透明灰色
+                val layoutParams = WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                            WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or
+                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT
+                )
+                windowManager.addView(grayBackground, layoutParams)
+                // 创建并显示 WinDialog
+                val winDialog = DeathDialog(context = requireContext())
+                winDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                winDialog.setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
+                winDialog.show()
+            },2500)
+
         }
+
     }
+    private fun startScrollAnimation(recyclerViews: List<RecyclerView>) {
+        val totalDuration = 2000L // 滚动总时长，单位：毫秒
+        val itemHeight = resources.getDimensionPixelSize(R.dimen.fab_margin) // 项的高度
+
+        // 计算需要滚动的距离
+        val numberOfItems = recyclerViews[0].adapter?.itemCount ?: 0
+        val scrollDistance = numberOfItems * itemHeight
+
+        recyclerViews.forEach { recyclerView ->
+            // 创建 ValueAnimator 实现平滑滚动
+            val animator = ValueAnimator.ofInt(0, scrollDistance)
+            animator.duration = totalDuration
+            animator.addUpdateListener { animation ->
+                val scrolled = animation.animatedValue as Int
+                recyclerView.scrollBy(0, scrolled)
+                // 如果滚动到列表底部，将列表滚动到起始位置，实现循环
+                if (!recyclerView.canScrollVertically(1)) {
+                    recyclerView.scrollToPosition(0)
+                }
+            }
+            animator.start()
+        }
+
+        // 在指定时间后停止滚动
+        Handler().postDelayed({
+            recyclerViews.forEach { recyclerView ->
+                recyclerView.smoothScrollToPosition(0)
+            }
+        }, totalDuration)
+    }
+
     fun someMethod(){
         binding.blackspin.visibility = View.GONE
+        binding.spin.visibility = View.VISIBLE
     }
 
 }

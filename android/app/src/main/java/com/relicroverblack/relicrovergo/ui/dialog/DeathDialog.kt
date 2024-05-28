@@ -45,7 +45,7 @@ class DeathDialog(context: Context) : AlertDialog(context) {
                     Intent(activity, WhichCarActivity::class.java)
                 }
                 else -> {
-                    null
+                    Intent(activity, HomeActivity::class.java)
                 }
             }
             intent?.let {

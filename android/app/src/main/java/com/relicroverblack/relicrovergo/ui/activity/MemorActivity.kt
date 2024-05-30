@@ -93,6 +93,11 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
             startActivity(intent)
         }
     }
+    fun updateProgress(isWin: Int) {
+        // Assuming max progress is 4
+        val progress = isWin * (binding.ProgressBar.max / 4)
+        binding.ProgressBar.progress = progress
+    }
     override fun onDeathDialogClick() {
 
     }

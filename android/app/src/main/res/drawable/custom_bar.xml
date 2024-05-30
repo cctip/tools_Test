@@ -23,14 +23,14 @@
             <shape>
                 <corners android:radius="8dp" />
                 <gradient
-                    android:startColor="#FFFFEB3B"
-                android:centerColor="#FF9800"
+                    android:startColor="#F9DC5C"
+                android:centerColor="#FFCB05"
                 android:centerY="0.5"
-                android:endColor="#FF9800"
+                android:endColor="#FFA630"
                 android:angle="270"/>  <!-- 调整渐变角度为 0 -->
                 <stroke
                     android:width="2dp"
-                    android:color="#FF000000"/>
+                    android:color="#FFE2CB"/>
             </shape>
         </clip>
     </item>

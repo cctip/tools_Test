@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.DetailsActivity"
             android:exported="false" />
         <activity

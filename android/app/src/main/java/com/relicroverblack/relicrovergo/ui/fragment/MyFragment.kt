@@ -2,12 +2,14 @@ package com.relicroverblack.relicrovergo.ui.fragment
 
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.relicroverblack.relicrovergo.R
 import com.relicroverblack.relicrovergo.base.BaseFragment
 import com.relicroverblack.relicrovergo.databinding.FragmentMyBinding
+import com.relicroverblack.relicrovergo.ui.activity.SettingsActivity
 import com.relicroverblack.relicrovergo.ui.adapter.MyItem
 import com.relicroverblack.relicrovergo.ui.adapter.MyRecAdapter
 import com.relicroverblack.relicrovergo.widgets.LuckyView
@@ -37,5 +39,9 @@ class MyFragment : BaseFragment<FragmentMyBinding>() {
         myRecAdapter = shardCount?.let { MyRecAdapter(items, it) }!!
         binding.myrec.layoutManager = GridLayoutManager(context, 2)
         binding.myrec.adapter = myRecAdapter
+        binding.iconSettin.setOnClickListener {
+            val intent = Intent(context, SettingsActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.relicroverblack.relicrovergo.MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="false"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,28 +18,22 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.DetailsActivity"
+            android:name=".ui.activity.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.dialog.DeathDialog"
+            android:name=".ui.activity.WhichCarComeActivity"
             android:exported="false" />
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.dialog.WinDialog"
+            android:name=".ui.activity.WhichCarActivity"
             android:exported="false" />
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCarComeActivity"
+            android:name=".ui.activity.WhichCardActivity"
             android:exported="false" />
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCarActivity"
+            android:name=".ui.activity.MemorActivity"
             android:exported="false" />
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.WhichCardActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.MemorActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.relicroverblack.relicrovergo.SplashActivity"
+            android:name=".SplashActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
@@ -66,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.relicroverblack.relicrovergo.ui.activity.HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -75,7 +69,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.relicroverblack.relicrovergo.ui.activity.WebActivity" />
+        <activity android:name=".ui.activity.WebActivity" />
     </application>
 
 </manifest>

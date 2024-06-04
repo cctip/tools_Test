@@ -30,9 +30,9 @@
         app:layout_constraintVertical_bias="0.29" />
     <com.relicroverblack.relicrovergo.widgets.LuckyView
         android:id="@+id/lucky_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="24dp"
+        android:layout_width="275dp"
+        android:layout_height="235dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintDimensionRatio="380:320"
@@ -67,24 +67,13 @@
         android:layout_width="170dp"
         android:layout_height="70dp"
         android:src="@mipmap/spin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.753" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.753" />
-    <ImageView
-        android:id="@+id/blackspin"
-        android:layout_width="170dp"
-        android:layout_height="70dp"
-        android:src="@mipmap/blackspin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.753" />
     <TextView
         android:layout_width="250dp"
         android:layout_height="40dp"

@@ -28,7 +28,7 @@ class WinDialog(context: Context) : AlertDialog(context) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
-        val images = listOf(R.mipmap.bluecar, R.mipmap.memorcyan, R.mipmap.memoryelow, R.mipmap.aeroplane, R.mipmap.memorblue, R.mipmap.island, R.mipmap.memorwhite)
+        val images = listOf(R.mipmap.iswaterland, R.mipmap.memorcyan, R.mipmap.memoryelow, R.mipmap.greenisland, R.mipmap.memorblue, R.mipmap.island, R.mipmap.memorwhite)
         val randomImageIndex = (0 until images.size).random()
         windialogimg?.setImageResource(images[randomImageIndex])
         updateDisplayCount(images[randomImageIndex], context)
@@ -39,7 +39,6 @@ class WinDialog(context: Context) : AlertDialog(context) {
         editor.putInt("displayed_image", images[randomImageIndex])
         editor.apply()
     }
-    // 更新图片的展示次数
     // 更新图片的展示次数
     private fun updateDisplayCount(imageResId: Int, context: Context) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

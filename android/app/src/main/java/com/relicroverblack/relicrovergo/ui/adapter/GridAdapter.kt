@@ -33,6 +33,7 @@ class GridAdapter(
     private var currentRow = 0
     private val memorstart = (context as MemorActivity).findViewById<TextView>(R.id.memorstart)
     private val updateProgressListener: (Int) -> Unit = { (context as MemorActivity).updateProgress(it) }
+    private val updateTextViewListener: (Int) -> Unit = { (context as MemorActivity).updateTextView(it) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_memorgrid, parent, false)
@@ -96,7 +97,8 @@ class GridAdapter(
                     clickedStates[position] = true // 标记为已点击
                     if (expanded.contains(position)) {
                         isWin++
-                        updateProgressListener(isWin)
+                        // Update progress here if required
+                        // updateProgressListener(isWin)
                         imageView.apply {
                             setImageResource(item.imageResourceId)
                             layoutParams = layoutParams.apply {
@@ -110,6 +112,9 @@ class GridAdapter(
                         }
                     } else {
                         isLose++
+                        // Update progress here
+                        updateProgressListener(isLose)
+                        updateTextViewListener(isLose)
                         if (vibrator.hasVibrator()) {
                             val pattern = longArrayOf(0, 100)
                             val vibrationEffect = VibrationEffect.createWaveform(pattern, -1)
@@ -136,6 +141,5 @@ class GridAdapter(
         }, 1000)
     }
 }
-
 
 data class GridItem(val imageResourceId: Int, val backgroundImageResourceId: Int)

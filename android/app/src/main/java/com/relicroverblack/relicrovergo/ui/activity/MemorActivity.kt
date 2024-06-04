@@ -23,7 +23,7 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GridAdapter
-    private var currentRow = 0
+    private var currentRow = 3
 
     override fun getViewBinding(): ActivityMemorBinding = ActivityMemorBinding.inflate(layoutInflater)
 
@@ -31,7 +31,9 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
         binding.recyclerView.isClickable=false
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
-
+        binding.ProgressBar.max = 100
+        binding.ProgressBar.progress = 100
+        binding.textView.text = "3"
         val gridItems = listOf(
             GridItem(R.mipmap.memorblue, R.mipmap.memoritembg),
             GridItem(R.mipmap.memorcyan, R.mipmap.memoritembg),
@@ -93,15 +95,20 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
             startActivity(intent)
         }
     }
-    fun updateProgress(isWin: Int) {
+    fun updateProgress(isLose: Int) {
         // Assuming max progress is 4
-        val progress = isWin * (binding.ProgressBar.max / 4)
+        val progress = 100- (isLose * (binding.ProgressBar.max / 3))
         binding.ProgressBar.progress = progress
     }
     override fun onDeathDialogClick() {
 
     }
 
+    fun updateTextView(isLose: Int) {
+        // Assuming initial value is 3 and decreases by 1 for each `isLose`
+        val remainingLives = 3 - isLose
+        binding.textView.text = remainingLives.toString()
+    }
     override fun onWinDialogClick() {
 
     }

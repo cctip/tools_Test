@@ -101,8 +101,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         app:layout_constraintVertical_bias="0.131" />
+    <ImageView
+        android:id="@+id/oneblackbg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/blackbgthere"
+        android:scaleType="fitXY"
+        />
 
-
+    <TextView
+        android:id="@+id/oneblacktext"
+        android:layout_width="332dp"
+        android:layout_height="96dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal|top"
+        android:lineSpacingExtra="-1sp"
+        android:text="Follow the sequence of house changes to progress. Click on each house in the correct order to win. Let's get started!"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/oneblackbg"
+        app:layout_constraintEnd_toEndOf="@+id/oneblackbg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/oneblackbg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

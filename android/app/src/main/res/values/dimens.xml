@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="page_margin">16dp</dimen>
+    <dimen name="pager_width">200dp</dimen>
 </resources>

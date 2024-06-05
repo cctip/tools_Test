@@ -26,6 +26,12 @@ class WhichCardActivity : BaseActivity<ActivityWhichCardBinding>() {
         ActivityWhichCardBinding.inflate(layoutInflater)
 
     override fun initData() {
+        binding.recyclerView.isClickable = false
+        Handler().postDelayed({
+            binding.whichblackbg.visibility = View.GONE
+            binding.whichtwoblacktext.visibility = View.GONE
+            binding.recyclerView.isClickable = true
+        }, 2000)
         binding.ProgressBar.progress = 100
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
@@ -88,8 +94,8 @@ class WhichCardActivity : BaseActivity<ActivityWhichCardBinding>() {
                         format = PixelFormat.TRANSLUCENT
                     }
                     windowManager.addView(grayBackground, layoutParams)
-
-                    val winDialog = WinDialog(this@WhichCardActivity).apply {
+                    val images = listOf(R.mipmap.greenisland, R.mipmap.iswaterland, R.mipmap.island)
+                    val winDialog = WinDialog(this@WhichCardActivity,images).apply {
                         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                         setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
                     }

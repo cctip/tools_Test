@@ -21,6 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.relicroverblack.relicrovergo.R
+import com.relicroverblack.relicrovergo.ui.dialog.DeathDialog
 import com.relicroverblack.relicrovergo.ui.dialog.WinBingDialog
 import com.relicroverblack.relicrovergo.ui.dialog.WinDialog
 import com.relicroverblack.relicrovergo.utils.DisplayUtils
@@ -85,6 +86,12 @@ class LuckyView : View {
                     (context as? Activity)?.runOnUiThread {
                         Handler().postDelayed({
                             showWinDialog()
+                        }, 200)
+                    }
+                }else{
+                    (context as? Activity)?.runOnUiThread {
+                        Handler().postDelayed({
+                            showDeathDialog()
                         }, 200)
                     }
                 }
@@ -253,6 +260,12 @@ class LuckyView : View {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val currentShard = prefs.getInt(SHARD_KEY, 0)
         prefs.edit().putInt(SHARD_KEY, currentShard + 1).apply()
+    }
+    private fun showDeathDialog() {
+        val winDialog = DeathDialog(context)
+        winDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        winDialog.setCanceledOnTouchOutside(false)
+        winDialog.show()
     }
     fun areAllImagesChanged(): Boolean {
         return customBitmaps.all { it != R.mipmap.cloud }

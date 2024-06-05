@@ -57,11 +57,15 @@ class ShopingFragment : BaseFragment<FragmentShopingBinding>() {
         shoptopitems = mutableListOf(
             ShopTop(R.mipmap.iswaterland, R.mipmap.memoritembg),
             ShopTop(R.mipmap.memorcyan, R.mipmap.memoritembg),
+            ShopTop(R.mipmap.smallbluecar, R.mipmap.memoritembg),
             ShopTop(R.mipmap.memoryelow, R.mipmap.memoritembg),
+            ShopTop(R.mipmap.bussmall, R.mipmap.memoritembg),
             ShopTop(R.mipmap.greenisland, R.mipmap.memoritembg),
             ShopTop(R.mipmap.memorblue, R.mipmap.memoritembg),
             ShopTop(R.mipmap.island, R.mipmap.memoritembg),
+            ShopTop(R.mipmap.fly, R.mipmap.memoritembg),
             ShopTop(R.mipmap.memorwhite, R.mipmap.memoritembg),
+
         )
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         adapter = HorizontalAdapter(shoptopitems, sharedPreferences, ::updateLuckyViewImages, binding.luckyView) // 传递updateLuckyViewImages方法

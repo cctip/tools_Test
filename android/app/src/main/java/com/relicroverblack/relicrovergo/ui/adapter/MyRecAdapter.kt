@@ -48,12 +48,12 @@ class MyRecAdapter(private val items: List<MyItem>, private val shardCount: Int)
                 // 计算进度并设置进度条
                 val progress = (shardCount * 10).coerceAtMost(100) // 确保进度不超过100%
                 progressBar.progress = progress
+                if(progress == 100){
+                    itemView.setBackgroundResource(R.mipmap.myintent)
+                    // 设置点击事件
 
-                // 设置点击事件
-                itemview.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailsActivity::class.java)
-                    itemView.context.startActivity(intent)
                 }
+
             }
         }
     }

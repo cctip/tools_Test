@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.view.View
 import android.view.WindowManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +29,13 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
     override fun getViewBinding(): ActivityMemorBinding = ActivityMemorBinding.inflate(layoutInflater)
 
     override fun initData() {
-        binding.recyclerView.isClickable=false
+        binding.memorstart.isClickable = false
+        Handler().postDelayed({
+            binding.oneblacktext.visibility = View.GONE
+            binding.oneblackbg.visibility = View.GONE
+            binding.memorstart.isClickable = true
+        }, 2000)
+        binding.recyclerView.isClickable = false
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         binding.ProgressBar.max = 100
@@ -81,7 +88,8 @@ class MemorActivity : BaseActivity<ActivityMemorBinding>(), DialogClickListener 
                 layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 layoutParams.format = PixelFormat.TRANSLUCENT
                 windowManager.addView(grayBackground, layoutParams)
-                val winDialog = WinDialog(this@MemorActivity)
+                val images = listOf(R.mipmap.memorcyan, R.mipmap.memorwhite, R.mipmap.memoryelow,R.mipmap.memorblue)
+                val winDialog = WinDialog(this@MemorActivity,images)
                 winDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 winDialog.setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
                 winDialog.show()

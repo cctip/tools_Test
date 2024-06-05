@@ -1,6 +1,8 @@
 package com.relicroverblack.relicrovergo.ui.activity
 
 import android.content.Intent
+import android.os.Handler
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.relicroverblack.relicrovergo.R
 import com.relicroverblack.relicrovergo.base.BaseActivity
@@ -13,6 +15,10 @@ class WhichCarActivity : BaseActivity<ActivityWhichCarBinding>() {
     private var currentIndex = 0
     override fun getViewBinding(): ActivityWhichCarBinding = ActivityWhichCarBinding.inflate(layoutInflater)
     override fun initData() {
+        Handler().postDelayed({
+            binding.oneblacktext.visibility = View.GONE
+            binding.oneblackbg.visibility = View.GONE
+        }, 2000)
         binding.whichcarstart.isClickable = false
         binding.memorback.setOnClickListener {
             finish()

@@ -27,7 +27,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>() {
         val sharedPreferences = context?.getSharedPreferences(LuckyView.PREFS_NAME, Context.MODE_PRIVATE)
         val shardCount = sharedPreferences?.getInt(LuckyView.SHARD_KEY, 0)
         val items = listOf(
-            MyItem(R.mipmap.chichen, "Chichen itza", "MEXICO", R.mipmap.myintent),
+            MyItem(R.mipmap.chichen, "Chichen itza", "MEXICO", R.mipmap.mybackintent),
             MyItem(R.mipmap.petra, "Petra", "JORDAN", R.mipmap.mybackintent),
             MyItem(R.mipmap.taj, "Taj Mahal", "INDIA", R.mipmap.mybackintent),
             MyItem(R.mipmap.machu, "Machu Picchu", "PERU", R.mipmap.mybackintent),

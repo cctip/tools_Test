@@ -76,7 +76,7 @@
         android:layout_width="370dp"
         android:layout_height="560dp"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -84,7 +84,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.192" />
 
+    <ImageView
+        android:id="@+id/whichblackbg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/blackbgthere"
+        android:scaleType="fitXY"
+        />
 
+    <TextView
+        android:id="@+id/whichtwoblacktext"
+        android:layout_width="332dp"
+        android:layout_height="144dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal|top"
+        android:lineSpacingExtra="-1sp"
+        android:text="Flip different cards. If you reveal a bomb, it will cost you one life. Be careful, you only have three lives. If you reveal the mainland, congratulations, you've successfully cleared the level!"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/whichblackbg"
+        app:layout_constraintEnd_toEndOf="@+id/whichblackbg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/whichblackbg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

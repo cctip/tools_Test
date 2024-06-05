@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.relicroverblack.relicrovergo.R
 import com.relicroverblack.relicrovergo.base.BaseActivity
@@ -27,7 +28,6 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
     private val handler = Handler(Looper.getMainLooper())
     private var autoScrollTimer: Timer? = null
     private var lastClickedImageResourceId = 0
-
 
     override fun getViewBinding(): ActivityWhichCarComeBinding = ActivityWhichCarComeBinding.inflate(layoutInflater)
 
@@ -68,15 +68,12 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
         val pagerWidth = resources.getDimensionPixelOffset(R.dimen.pager_width)
         val screenWidth = resources.displayMetrics.widthPixels
         val offsetPx = screenWidth - pagerWidth - pageMarginPx
-
         binding.pager.setPageTransformer { page, position ->
             page.translationX = -offsetPx * position
         }
-
-        Handler().postDelayed({
             disableAllControls()
             startAutoScroll()
-        }, 1000)
+
     }
 
     private fun disableAllControls() {
@@ -100,18 +97,25 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
 
     private fun startAutoScroll() {
         autoScrollTimer = Timer()
+        val scrollInterval = 10L  // 每次滚动的时间间隔，越小越平滑
+        val totalDuration = 8000L // 总的滚动时间为5秒
+        val totalSteps = totalDuration / scrollInterval // 总的滚动次数
+        val stepDistance = 0.01f // 每次滚动的距离，越小越慢
+
         autoScrollTimer?.scheduleAtFixedRate(object : TimerTask() {
-            private var elapsedTime = 0L
+            private var elapsedSteps = 0L
+
             override fun run() {
-                currentIndex = currentIndex % imagePagerAdapter.itemCount
-                val nextPage = (currentIndex + 1) % imagePagerAdapter.itemCount
-                Log.d("AutoScroll", "Next Page: $nextPage")
                 runOnUiThread {
-                    binding.pager.setCurrentItem(nextPage, true)
-                    currentIndex = nextPage
+                    // 计算下一页的位置
+                    val nextItem = binding.pager.currentItem + 1
+                    // 使用反射获取ViewPager2内部的RecyclerView并设置其滚动偏移量
+                    val recyclerView = binding.pager.getChildAt(0) as RecyclerView
+                    recyclerView.scrollBy((recyclerView.width * stepDistance).toInt(), 0)
                 }
-                elapsedTime += 700
-                if (elapsedTime >= 6000) {
+                elapsedSteps += 1
+
+                if (elapsedSteps >= totalSteps) {
                     autoScrollTimer?.cancel()
                     autoScrollTimer = null
                     runOnUiThread {
@@ -119,12 +123,12 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
                     }
                 }
             }
-        }, 0, 700)
+        }, 0, scrollInterval)
     }
 
     private fun handleLastPosition() {
         val currentImageIndex = currentIndex % imagePagerAdapter.itemCount
-        val currentImageResourceId = imagePagerAdapter.getImageResourceId(currentImageIndex)
+        val currentImageResourceId = imagePagerAdapter.getImageResourceId(currentImageIndex+1)
         Log.i("AutoScroll", currentImageResourceId.toString())
         if (lastClickedImageResourceId == currentImageResourceId) {
             Handler().postDelayed({
@@ -152,7 +156,7 @@ class WhichCarComeActivity : BaseActivity<ActivityWhichCarComeBinding>() {
             layoutParams.format = PixelFormat.TRANSLUCENT
             windowManager.addView(grayBackground, layoutParams)
             val images = listOf(R.mipmap.bussmall, R.mipmap.fly, R.mipmap.smallbluecar)
-            val winDialog = WinDialog( context = this@WhichCarComeActivity,images)
+            val winDialog = WinDialog( context = this@WhichCarComeActivity, images)
             winDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             winDialog.setCanceledOnTouchOutside(false) // 设置点击外部区域不关闭弹窗
             winDialog.show()

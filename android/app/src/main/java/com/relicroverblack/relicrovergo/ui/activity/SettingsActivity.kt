@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Switch
 import com.relicroverblack.relicrovergo.R
 import com.relicroverblack.relicrovergo.base.BaseActivity
@@ -18,6 +19,18 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
     override fun getViewBinding(): ActivitySettingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
 
     override fun initData() {
+        binding.privacypolicyview.setOnClickListener(View.OnClickListener { view: View? ->
+            WebActivity.open(
+                this@SettingsActivity,
+                ""
+            )
+        })
+        binding.termsofservice.setOnClickListener(View.OnClickListener { view: View? ->
+            WebActivity.open(
+                this@SettingsActivity,
+                ""
+            )
+        })
         binding.back.setOnClickListener {
             finish()
         }
@@ -37,6 +50,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
             sharedPreferences.edit().putBoolean("musicOn", isChecked).apply()
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -12,6 +12,7 @@ import com.relicroverblack.relicrovergo.R
 
 class PlayCarAdapter(private val context: Context, private val imageList: Array<Int>) :
     RecyclerView.Adapter<PlayCarAdapter.ImageViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayCarAdapter.ImageViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_playcar, parent, false)
         return ImageViewHolder(view)
@@ -19,11 +20,7 @@ class PlayCarAdapter(private val context: Context, private val imageList: Array<
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val adjustedPosition = position % imageList.size
-        val handler = Handler(Looper.getMainLooper())
-
-        handler.postDelayed({
-            holder.imageView.setImageResource(imageList[adjustedPosition])
-        }, 500)
+        holder.imageView.setImageResource(imageList[adjustedPosition])
     }
 
     override fun getItemCount(): Int {
